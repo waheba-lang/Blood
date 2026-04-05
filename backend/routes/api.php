@@ -7,6 +7,7 @@ use App\Http\Controllers\DonationRequestController;
 use App\Http\Controllers\DonationController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\CampaignController;
+use App\Http\Controllers\MessageController;
 use App\Models\User;
 use App\Models\DonationRequest;
 use App\Models\Donation;
@@ -60,6 +61,11 @@ Route::middleware('auth:sanctum')->group(function () {
     // Users (profile update)
     Route::get('/users', [UserController::class, 'index']);
     Route::put('/users/{id}', [UserController::class, 'update']);
+
+    // Messaging
+    Route::get('/messages/conversations', [MessageController::class, 'getConversations']);
+    Route::get('/messages/{userId}', [MessageController::class, 'index']);
+    Route::post('/messages', [MessageController::class, 'store']);
 
     // Admin specific routes
     Route::middleware('admin')->prefix('admin')->group(function () {

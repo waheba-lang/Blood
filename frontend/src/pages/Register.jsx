@@ -34,9 +34,9 @@ export default function Register() {
   };
 
   const inputStyle = {
-    width: '100%', 
-    padding: '0.9rem 1.25rem', 
-    borderRadius: '12px', 
+    width: '100%',
+    padding: '0.9rem 1.25rem',
+    borderRadius: '12px',
     border: '1px solid rgba(0,0,0,0.1)',
     background: 'rgba(255,255,255,0.5)',
     transition: 'var(--transition)',
@@ -45,36 +45,36 @@ export default function Register() {
     textAlign: isRtl ? 'right' : 'left'
   };
 
-  const labelStyle = { 
-    display: 'block', 
-    marginBottom: '0.5rem', 
-    fontWeight: 600, 
-    fontSize: '0.85rem', 
+  const labelStyle = {
+    display: 'block',
+    marginBottom: '0.5rem',
+    fontWeight: 600,
+    fontSize: '0.85rem',
     color: 'var(--text-dark)',
     textAlign: isRtl ? 'right' : 'left'
   };
 
   return (
-    <div className="auth-page-wrapper" style={{ 
-      display: 'flex', 
-      justifyContent: 'center', 
-      alignItems: 'center', 
+    <div className="auth-page-wrapper" style={{
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
       minHeight: '90vh',
       padding: '4rem 2rem',
       background: 'radial-gradient(circle at top left, rgba(230, 57, 70, 0.05), transparent), radial-gradient(circle at bottom right, rgba(69, 123, 157, 0.05), transparent)'
     }}>
-      <div className="glass-panel" style={{ 
-        width: '100%', 
-        maxWidth: '600px', 
+      <div className="glass-panel" style={{
+        width: '100%',
+        maxWidth: '600px',
         padding: '3rem',
         animation: 'fadeInUp 0.6s ease-out',
         textAlign: isRtl ? 'right' : 'left'
       }}>
         <div style={{ textAlign: 'center', marginBottom: '2.5rem' }}>
-          <h2 style={{ 
-            fontSize: '2rem', 
-            fontWeight: 800, 
-            color: 'var(--text-dark)', 
+          <h2 style={{
+            fontSize: '2rem',
+            fontWeight: 800,
+            color: 'var(--text-dark)',
             marginBottom: '0.5rem',
             letterSpacing: '-0.5px'
           }}>{t('auth.register_title')}</h2>
@@ -82,12 +82,12 @@ export default function Register() {
         </div>
 
         {error && (
-          <div style={{ 
-            background: 'rgba(230, 57, 70, 0.1)', 
-            color: 'var(--primary)', 
-            padding: '1rem', 
-            borderRadius: '12px', 
-            marginBottom: '2rem', 
+          <div style={{
+            background: 'rgba(230, 57, 70, 0.1)',
+            color: 'var(--primary)',
+            padding: '1rem',
+            borderRadius: '12px',
+            marginBottom: '2rem',
             fontSize: '0.9rem',
             border: '1px solid rgba(230, 57, 70, 0.2)',
             fontWeight: 500,
@@ -97,15 +97,15 @@ export default function Register() {
           </div>
         )}
 
-        <form onSubmit={handleSubmit} style={{ 
-          display: 'grid', 
-          gridTemplateColumns: '1fr 1fr', 
+        <form onSubmit={handleSubmit} style={{
+          display: 'grid',
+          gridTemplateColumns: '1fr 1fr',
           gap: '1.5rem',
           direction: isRtl ? 'rtl' : 'ltr'
         }}>
           <div style={{ gridColumn: '1 / -1' }}>
             <label style={labelStyle}>{t('auth.fullname_label')}</label>
-            <input name="name" type="text" required placeholder={t('auth.fullname_placeholder')} style={inputStyle} onChange={handleChange} />
+            <input name="name" type="text" style={inputStyle} onChange={handleChange} />
           </div>
 
           <div style={{ gridColumn: '1 / -1' }}>

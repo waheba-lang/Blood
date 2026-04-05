@@ -90,6 +90,10 @@ export default function Navbar() {
             </>
           ) : (
             <div className="user-profile-nav" style={{ display: 'flex', gap: '1.25rem', alignItems: 'center' }}>
+              <Link to="/messages" style={{ textDecoration: 'none', color: 'var(--text-dark)', fontSize: '1.4rem', display: 'flex', alignItems: 'center' }}>
+                💬
+              </Link>
+
               <Link to="/notifications" style={{ position: 'relative', textDecoration: 'none', color: 'var(--text-dark)', fontSize: '1.4rem', display: 'flex', alignItems: 'center' }}>
                 🔔
                 {unreadCount > 0 && (

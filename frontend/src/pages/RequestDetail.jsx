@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import axios from '../utils/axios';
 import Card from '../components/Card';
@@ -9,6 +9,7 @@ export default function RequestDetail() {
   const { t, i18n } = useTranslation();
   const { id } = useParams();
   const { user } = useAuth();
+  const navigate = useNavigate();
   const [request, setRequest] = useState(null);
   const [comments, setComments] = useState([]);
   const [newComment, setNewComment] = useState('');
@@ -116,8 +117,17 @@ export default function RequestDetail() {
           </div>
         )}
 
-        <div style={{ display: 'flex', gap: '1rem' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
           <button onClick={handleDonate} className="btn btn-primary" style={{ flex: 1, padding: '1.2rem', fontSize: '1.1rem' }}>{t('request_detail.donate_btn')}</button>
+          {user && user.id !== request.user_id && (
+            <button 
+              onClick={() => navigate('/messages', { state: { contactId: request.user_id } })}
+              className="btn btn-outline"
+              style={{ width: '100%', padding: '1.2rem', borderRadius: '12px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', fontSize: '1.1rem' }}
+            >
+              <span>💬</span> {t('nav.messages')}
+            </button>
+          )}
         </div>
       </div>
 

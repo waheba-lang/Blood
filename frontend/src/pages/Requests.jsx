@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import axios from '../utils/axios';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { useTranslation } from 'react-i18next';
 import './home.css';
@@ -10,6 +10,7 @@ export default function Requests() {
   const [requests, setRequests] = useState([]);
   const [loading, setLoading] = useState(true);
   const { user } = useAuth();
+  const navigate = useNavigate();
   
   // Filter States
   const [bloodType, setBloodType] = useState('');
@@ -150,6 +151,15 @@ export default function Requests() {
                       {t('common.details')}
                     </Link>
                   </div>
+                  {user && user.id !== req.user_id && (
+                    <button 
+                      onClick={() => navigate('/messages', { state: { contactId: req.user_id } })}
+                      className="btn btn-outline"
+                      style={{ width: '100%', marginTop: '0.75rem', padding: '0.6rem', borderRadius: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}
+                    >
+                      <span>💬</span> {t('nav.messages')}
+                    </button>
+                  )}
                 </div>
               ))}
             </div>

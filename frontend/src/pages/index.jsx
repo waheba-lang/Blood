@@ -12,6 +12,7 @@ export { default as MyDonations } from './MyDonations';
 export { default as MyRequests } from './MyRequests';
 export { default as FindDonors } from './FindDonors';
 export { default as UserManagement } from './UserManagement';
+export { default as Messages } from './Messages';
 export { default as AdminLogin } from './AdminLogin';
 export { default as AdminDashboard } from './AdminDashboard';
 export { default as ContentManagement } from './ContentManagement';

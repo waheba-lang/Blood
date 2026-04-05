@@ -1,5 +1,5 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { Home, Login, Register, AdminLogin, AdminDashboard, ContentManagement, About, Dashboard, Requests, NewRequest, RequestDetail, PublicProfile, Profile, Notifications, MyDonations, MyRequests, FindDonors, UserManagement } from './pages';
+import { Home, Login, Register, AdminLogin, AdminDashboard, ContentManagement, About, Dashboard, Requests, NewRequest, RequestDetail, PublicProfile, Profile, Notifications, MyDonations, MyRequests, FindDonors, UserManagement, Messages } from './pages';
 import Campaigns from './pages/Campaigns';
 import Impact from './pages/Impact';
 import Navbar from './components/Navbar';
@@ -27,6 +27,7 @@ function App() {
             <Route path="/users/:id" element={<PublicProfile />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/notifications" element={<Notifications />} />
+            <Route path="/messages" element={<Messages />} />
             <Route path="/my-donations" element={<MyDonations />} />
             <Route path="/my-requests" element={<MyRequests />} />
             <Route path="/find-donors" element={<FindDonors />} />
