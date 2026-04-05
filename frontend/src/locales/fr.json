@@ -1,0 +1,299 @@
+{
+  "nav": {
+    "home": "Accueil",
+    "about": "À propos",
+    "campaigns": "Campagnes",
+    "impact": "Impact",
+    "requests": "Demandes",
+    "dashboard": "Tableau de bord",
+    "login": "Connexion",
+    "register": "Inscription",
+    "logout": "Quitter",
+    "profile": "Mon Profil"
+  },
+  "home": {
+    "hero_tag": "#DonDeSang",
+    "hero_title_main": "Donnez votre sang.",
+    "hero_title_sub": "Chaque don compte.",
+    "hero_description": "Chaque jour, des milliers de personnes ont besoin de sang. Votre don peut faire la différence. Rejoignez notre communauté de donneurs.",
+    "become_donor": "Devenir donneur",
+    "view_requests": "Voir les demandes",
+    "stats": {
+      "active_donors": "Donateurs inscrits",
+      "urgent_requests": "Demandes de sang",
+      "lives_saved": "Vies sauvées",
+      "hospitals": "Poches collectées"
+    },
+    "urgent_title": "Demandes Urgentes",
+    "view_all": "Voir tout",
+    "how_it_works": "Comment ça marche ?",
+    "steps": {
+      "register": {
+        "title": "Inscrivez-vous",
+        "desc": "Créez votre compte donneur en quelques clics"
+      },
+      "find": {
+        "title": "Trouvez",
+        "desc": "Consultez les demandes urgentes près de chez vous"
+      },
+      "donate": {
+        "title": "Donnez",
+        "desc": "Rendez-vous à l'hôpital et sauvez des vies"
+      }
+    },
+    "cta_title": "Prêt à sauver des vies ?",
+    "cta_desc": "Rejoignez notre communauté de donneurs et faites la différence dès aujourd'hui.",
+    "learn_more": "En savoir plus"
+  },
+  "campaigns": {
+    "hero_title": "Campagnes de Don",
+    "hero_desc": "Participez à nos événements de collecte et aidez-nous à sauver encore plus de vies dans votre région.",
+    "donors_count": "donneurs",
+    "goal": "Objectif",
+    "participate": "Participer",
+    "loading": "Chargement des campagnes..."
+  },
+  "requests_page": {
+    "title": "Demandes de sang actives",
+    "request_blood": "Demander du sang",
+    "no_results": "Aucune demande de sang ne correspond à vos filtres.",
+    "give_blood": "Faire un don",
+    "units": "Unités",
+    "login_prompt": "Veuillez vous connecter pour faire un don.",
+    "success_message": "Merci ! Votre don a été enregistré. Le receveur sera informé.",
+    "error_message": "Une erreur est survenue lors de l'enregistrement du don."
+  },
+  "find_donors": {
+    "title": "Trouver des Donneurs",
+    "access_denied": "Accès Refusé",
+    "no_donors": "Aucun donneur disponible pour ces critères."
+  },
+  "donor_card": {
+    "contact": "Contacter",
+    "phone": "Téléphone"
+  },
+  "footer": {
+    "slogan": "Chaque goutte compte. Ensemble, sauvons des vies.",
+    "links_title": "Liens rapides",
+    "contact_title": "Contact",
+    "rights": "Donnez du sang Maroc. Tous droits réservés."
+  },
+  "about": {
+    "title": "À Propos de BloodConnect",
+    "mission_title": "Notre Mission",
+    "mission_text": "BloodConnect s'engage à faciliter l'accès au sang pour les personnes ayant un besoin urgent de transfusion sanguine, et pour les généreux donneurs prêts à sauver des vies. Notre plateforme utilise la technologie pour rendre le processus de don plus rapide, plus simple et plus transparent.",
+    "for_donors_title": "Pour les donneurs",
+    "for_donors_text": "Restez facilement informé(e) des demandes urgentes dans votre ville. Suivez vos dons et mesurez précisément leur impact sur votre communauté.",
+    "for_patients_title": "Pour les patients et les hôpitaux",
+    "for_patients_text": "Diffusez instantanément les demandes urgentes de sang auprès des donneurs locaux. Réduisez les temps d'attente et contactez rapidement les bénévoles disponibles.",
+    "contact_us": "Contactez-nous",
+    "return_home": "Retour à l'accueil"
+  },
+  "filters": {
+    "label": "Filtres:",
+    "all_groups": "Tous Groupes",
+    "all_urgencies": "Toutes Urgencies",
+    "city_placeholder": "Ville (ex: Oujda)",
+    "urgency": {
+      "high": "Haute (Très urgent)",
+      "medium": "Moyenne (Urgent)",
+      "low": "Basse (Normal)"
+    }
+  },
+  "impact": {
+    "hero_title": "Notre Impact",
+    "hero_desc": "Découvrez comment notre communauté transforme des vies chaque jour. Derrière chaque chiffre, il y a une histoire.",
+    "stats": {
+      "donors_label": "Donateurs Inscrits",
+      "satisfied_label": "Demandes Satisfaites",
+      "pockets_label": "Poches Collectées"
+    },
+    "community_stories": "Histoires de la Communauté"
+  },
+  "stories": {
+    "ahmed": {
+      "name": "Ahmed K.",
+      "role": "Receveur",
+      "quote": "Grâce aux donneurs anonymes, j'ai pu survivre à un grave accident de la route. Je serai éternellement reconnaissant pour ce don de vie."
+    },
+    "lahlou": {
+      "name": "Dr. Lahlou",
+      "role": "Médecin Chef",
+      "quote": "Chaque poche de sang nous permet de réaliser des interventions cruciales. La plateforme BloodConnect a grandement facilité notre approvisionnement."
+    },
+    "sara": {
+      "name": "Sara B.",
+      "role": "Donneuse Régulière (5+ dons)",
+      "quote": "Donner mon sang est devenu une habitude pour moi. C'est un geste simple qui prend peu de temps, mais qui a un impact inestimable."
+    }
+  },
+  "common": {
+    "loading": "Chargement...",
+    "urgent": "URGENT",
+    "respond": "Répondre",
+    "details": "Détails",
+    "participate": "Participer"
+  },
+  "auth": {
+    "login_title": "Content de te revoir",
+    "login_subtitle": "Heureux de vous revoir parmi nous",
+    "register_title": "Rejoignez-nous",
+    "register_subtitle": "Créez votre compte BloodConnect",
+    "email_label": "Adresse email",
+    "password_label": "Mot de passe",
+    "confirm_password_label": "Confirmer",
+    "fullname_label": "Nom complet",
+    "fullname_placeholder": "Jean Dupont",
+    "role_label": "Je suis un...",
+    "role_donor": "Donneur",
+    "role_patient": "Patient / Hôpital",
+    "phone_label": "Téléphone",
+    "city_label": "Ville",
+    "blood_type_label": "Groupe sanguin",
+    "login_btn": "Se connecter",
+    "register_btn": "S'inscrire",
+    "no_account": "Vous n'avez pas de compte?",
+    "have_account": "Vous avez déjà un compte?",
+    "register_here": "S'inscrire ici",
+    "login_here": "Connectez-vous ici",
+    "password_mismatch": "Les mots de passe ne correspondent pas",
+    "login_error": "Identifiants invalides ou erreur réseau.",
+    "register_error": "L'inscription a échoué."
+  },
+  "new_request_form": {
+    "title": "Créer une demande de sang",
+    "patient_name": "Nom du patient",
+    "quantity": "Quantité (unités)",
+    "urgency_label": "Niveau d'urgence",
+    "hospital": "Nom de l'hôpital",
+    "city": "Ville",
+    "contact_note": "Note de contact (Optionnel)",
+    "submit": "Soumettre la demande",
+    "error": "Échec de la création de la demande",
+    "urgency": {
+      "normal": "Normal",
+      "urgent": "Urgent",
+      "critical": "Critique"
+    }
+  },
+  "profile": {
+    "title": "Mon Profil",
+    "subtitle": "Gérez vos informations personnelles et votre disponibilité.",
+    "edit": "Modifier le profil",
+    "save": "Enregistrer les modifications",
+    "saving": "Enregistrement...",
+    "cancel": "Annuler",
+    "available": "Disponible pour donner",
+    "not_available": "Non disponible",
+    "availability_checkbox": "Je suis actuellement disponible pour donner mon sang",
+    "update_success": "Profil mis à jour avec succès !",
+    "update_failed": "Échec de la mise à jour. Réessayez.",
+    "select_group": "Sélectionnez votre groupe"
+  },
+  "dashboard": {
+    "title": "Tableau de bord",
+    "welcome": "Bon retour, {{name}} 👋",
+    "stats": {
+      "requests": "Mes Demandes",
+      "donations": "Mes Dons",
+      "rank": "Rang",
+      "requests_desc": "Demandes de sang actives",
+      "donations_desc": "Vies potentiellement sauvées",
+      "rank_desc": "Niveau d'accès utilisateur"
+    },
+    "recent_activity": "Dernières Activités",
+    "view_all": "Tout voir",
+    "no_activity": "Aucune activité récente.",
+    "view_contact": "Voir contact",
+    "hide_contact": "Masquer",
+    "support_title": "Support d'urgence",
+    "support_desc": "Besoin d'aide immédiate pour une demande urgente ?",
+    "support_btn": "Contacter le support"
+  },
+  "notifications": {
+    "title": "Mes Notifications",
+    "unread": "{{count}} non lues",
+    "empty": "Vous n'avez aucune notification pour le moment.",
+    "mark_read": "Lu",
+    "delete": "Supprimer",
+    "view_contact": "Voir le contact",
+    "hide_contact": "Masquer contact",
+    "donor": "Donneur",
+    "phone": "Téléphone",
+    "email": "Email"
+  },
+  "my_requests": {
+    "title": "Mes demandes de sang",
+    "new_btn": "Nouvelle demande",
+    "empty": "Vous n'avez créé aucune demande de sang.",
+    "hospital": "Hôpital",
+    "quantity": "Quantité",
+    "urgency": "Urgence",
+    "status": "Statut",
+    "units": "unités"
+  },
+  "my_donations": {
+    "title": "Mes Dons",
+    "empty": "Vous n'avez encore fait aucun don.",
+    "donation_to": "Don pour",
+    "date": "Date",
+    "status": "Statut"
+  },
+  "admin": {
+    "login_title": "Portail Admin",
+    "login_subtitle": "Veuillez vous authentifier",
+    "access_denied": "Accès non autorisé. Cette zone est réservée aux administrateurs.",
+    "email_label": "Email administrateur",
+    "password_label": "Mot de passe sécurisé",
+    "login_btn": "S'authentifier",
+    "error": "Identifiants administrateur invalides ou erreur réseau.",
+    "sidebar": {
+      "title": "Administration",
+      "overview": "Vue d'ensemble",
+      "users": "Utilisateurs",
+      "content": "Contenu"
+    },
+    "dashboard": {
+      "title": "Vue d'ensemble de la plateforme",
+      "subtitle": "Statistiques en temps réel et suivi d'activité pour BloodConnect.",
+      "stats": {
+        "total_users": "Total Utilisateurs",
+        "donors": "Donneurs",
+        "requests": "Demandes de don",
+        "donations": "Dons terminés"
+      },
+      "recent_users": "Inscriptions Récentes",
+      "recent_requests": "Dernières Demandes",
+      "view_all": "Tout voir"
+    }
+  },
+  "request_detail": {
+    "back": "Retour aux demandes",
+    "title": "Demande de {{name}}",
+    "posted_by": "Publié par :",
+    "donate_btn": "Faire un don",
+    "donate_alert": "Veuillez vous connecter pour faire un don.",
+    "donate_success": "Merci ! Votre don a été enregistré. Le receveur sera informé.",
+    "donate_error": "Une erreur est survenue lors de l'enregistrement du don.",
+    "not_found": "Demande introuvable",
+    "discussion": "Discussion & Coordination",
+    "comment_placeholder": "Écrivez un commentaire ou posez une question...",
+    "comment_btn": "Poster",
+    "no_comments": "Aucun commentaire pour le moment. Soyez le premier à lancer la discussion !",
+    "login_to_comment": "Connectez-vous pour poster un commentaire."
+  },
+  "public_profile": {
+    "title": "{{name}} - Profil Public",
+    "donor_rank": "Donneur",
+    "patient_rank": "Patient",
+    "available": "Disponible pour un don",
+    "not_available": "Non disponible pour le moment",
+    "stats": {
+      "donations": "Dons effectués",
+      "requests": "Demandes créées"
+    },
+    "history": "Historique des activités",
+    "empty_history": "Aucune activité publique récente.",
+    "not_found": "Utilisateur introuvable"
+  }
+}
