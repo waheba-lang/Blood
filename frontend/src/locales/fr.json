@@ -1,15 +1,20 @@
 {
   "nav": {
     "home": "Accueil",
-    "about": "À propos",
     "campaigns": "Campagnes",
     "impact": "Impact",
-    "requests": "Demandes",
     "dashboard": "Tableau de bord",
     "login": "Connexion",
     "register": "Inscription",
     "logout": "Quitter",
-    "profile": "Mon Profil"
+    "profile": "Mon Profil",
+    "find_donors": "Trouver des Donneurs",
+    "statistics": "Statistiques",
+    "my_donations": "Mes dons"
+  },
+  "sidebar": {
+    "main_menu": "Menu Principal",
+    "my_activity": "Mon Activité"
   },
   "home": {
     "hero_tag": "#DonDeSang",
@@ -66,7 +71,20 @@
   "find_donors": {
     "title": "Trouver des Donneurs",
     "access_denied": "Accès Refusé",
-    "no_donors": "Aucun donneur disponible pour ces critères."
+    "no_donors": "Aucun donneur disponible pour ces critères.",
+    "login_required_title": "Connexion requise",
+    "login_required_body": "Vous devez être connecté pour accéder à cette page.",
+    "login_cta": "Se connecter",
+    "subtitle": "Trouvez un donneur compatible et contactez-le directement.",
+    "filter_available_only": "Filtre : disponibles seulement",
+    "reset_filters": "Réinitialiser les filtres",
+    "brand_badge": "BloodConnect",
+    "unspecified_city": "Non spécifié",
+    "available_badge": "Disponible",
+    "unavailable_badge": "Non disponible",
+    "call": "Appeler",
+    "call_now": "Appeler maintenant",
+    "donors_found_count": "{{count}} donneur(s) trouvé(s)"
   },
   "donor_card": {
     "contact": "Contacter",
@@ -78,37 +96,110 @@
     "contact_title": "Contact",
     "rights": "Donnez du sang Maroc. Tous droits réservés."
   },
-  "about": {
-    "title": "À Propos de BloodConnect",
-    "mission_title": "Notre Mission",
-    "mission_text": "BloodConnect s'engage à faciliter l'accès au sang pour les personnes ayant un besoin urgent de transfusion sanguine, et pour les généreux donneurs prêts à sauver des vies. Notre plateforme utilise la technologie pour rendre le processus de don plus rapide, plus simple et plus transparent.",
-    "for_donors_title": "Pour les donneurs",
-    "for_donors_text": "Restez facilement informé(e) des demandes urgentes dans votre ville. Suivez vos dons et mesurez précisément leur impact sur votre communauté.",
-    "for_patients_title": "Pour les patients et les hôpitaux",
-    "for_patients_text": "Diffusez instantanément les demandes urgentes de sang auprès des donneurs locaux. Réduisez les temps d'attente et contactez rapidement les bénévoles disponibles.",
-    "contact_us": "Contactez-nous",
-    "return_home": "Retour à l'accueil"
-  },
   "filters": {
     "label": "Filtres:",
     "all_groups": "Tous Groupes",
     "all_urgencies": "Toutes Urgencies",
     "city_placeholder": "Ville (ex: Oujda)",
+    "name_placeholder": "Rechercher par nom...",
+    "available_only": "Uniquement disponibles",
     "urgency": {
       "high": "Haute (Très urgent)",
       "medium": "Moyenne (Urgent)",
       "low": "Basse (Normal)"
     }
   },
-  "impact": {
-    "hero_title": "Notre Impact",
-    "hero_desc": "Découvrez comment notre communauté transforme des vies chaque jour. Derrière chaque chiffre, il y a une histoire.",
-    "stats": {
-      "donors_label": "Donateurs Inscrits",
-      "satisfied_label": "Demandes Satisfaites",
-      "pockets_label": "Poches Collectées"
-    },
-    "community_stories": "Histoires de la Communauté"
+  "stats": {
+    "title": "Statistiques des dons",
+    "description": "Visualisez les dons par groupe sanguin et par mois, avec filtres et graphiques interactifs.",
+    "total_users": "Utilisateurs Inscrits",
+    "available_donors": "Donneurs Disponibles",
+    "unavailable_donors": "Donneurs Indisponibles",
+    "lives_saved": "Vies Sauvées",
+    "total_donations": "Dons Complétés",
+    "chart_donors_title": "Disponibilité des Donneurs",
+    "chart_platform_title": "Aperçu Global de la Plateforme",
+    "platform_stats": "Statistiques Globales",
+    "monthly_donations": "Dons Mensuels",
+    "error_title": "Impossible de charger les statistiques",
+    "error_description": "Nous rencontrons des difficultés pour nous connecter au serveur. Veuillez vérifier votre connexion."
+  },
+  "stats_dashboard": {
+    "hero_title": "Statistiques des dons de sang",
+    "hero_subtitle": "Unités collectées par groupe sanguin et par mois. Filtrez l’année, le mois ou le groupe pour affiner l’analyse.",
+    "filters_title": "Filtres",
+    "filter_year": "Année",
+    "filter_month": "Mois",
+    "filter_blood": "Groupe sanguin",
+    "all_months": "Toute l’année",
+    "all_types": "Tous les groupes",
+    "chart_bar_stacked": "Dons par mois et par groupe (empilé)",
+    "chart_bar_month_detail": "Répartition par groupe pour le mois sélectionné",
+    "chart_line": "Évolution du volume de dons (unités)",
+    "chart_pie": "Répartition des unités par groupe sanguin",
+    "pie_hidden_hint": "Le graphique circulaire global est masqué lorsqu’un seul groupe est sélectionné.",
+    "summary_units_year": "Total d’unités sur l’année",
+    "summary_records": "Enregistrements de dons (lignes)",
+    "table_by_month": "Totaux par mois",
+    "table_by_type": "Totaux par groupe sanguin",
+    "col_month": "Mois",
+    "col_type": "Groupe",
+    "col_units": "Unités",
+    "registered_users": "Utilisateurs inscrits",
+    "registered_donors": "Donneurs inscrits",
+    "eligible_donors": "Donneurs actuellement éligibles",
+    "months_full": ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"],
+    "months_short": ["janv.", "févr.", "mars", "avr.", "mai", "juin", "juil.", "août", "sept.", "oct.", "nov.", "déc."]
+  },
+  "donation_status": {
+    "Confirmed": "Confirmé",
+    "Pending": "En attente",
+    "Cancelled": "Annulé"
+  },
+  "bms": {
+    "brand": "BloodConnect",
+    "home_title": "Gestion du sang, simplifiée",
+    "home_subtitle": "Suivez le stock par groupe, l’éligibilité des donneurs et gardez votre banque prête — un tableau de bord clair pour les équipes et les donneurs.",
+    "live_overview": "Vue d’ensemble",
+    "stock_by_type": "Stock par groupe sanguin",
+    "units": "unités",
+    "api_hint": "Démarrez l’API et exécutez les migrations pour afficher le stock en direct.",
+    "dashboard_badge": "Tableau de bord",
+    "operations_center": "Centre des opérations",
+    "greeting": "Bonjour, {{name}} — niveaux de stock, disponibilité des donneurs et alertes en un seul endroit.",
+    "i_donated": "J’ai donné",
+    "view_donors": "Voir les donneurs",
+    "find_donors": "Trouver des donneurs",
+    "stat_donors": "Donneurs",
+    "stat_available": "Disponibles maintenant",
+    "stat_donations": "Dons enregistrés",
+    "stat_stock": "Unités en stock",
+    "stat_total_donors": "Donneurs totaux",
+    "stat_available_donors": "Donneurs disponibles",
+    "stat_total_donations": "Dons enregistrés",
+    "stat_stock_units": "Unités de stock",
+    "blood_stock_title": "Stock sanguin par groupe",
+    "low_stock_title": "Alertes stock bas",
+    "all_groups_ok": "Tous les groupes sont au-dessus du seuil minimum.",
+    "low_stock_line": "{{type}} — il ne reste que {{count}} unités (seuil : 10)",
+    "my_donations_badge": "Mes dons",
+    "declare_title": "Enregistrer un don",
+    "declare_subtitle": "Une action met à jour votre dossier et ajoute des unités au bon groupe. Délai d’éligibilité : 3 mois.",
+    "i_donated_today": "J’ai donné aujourd’hui",
+    "units_label": "Unités (1–5)",
+    "confirm_donation": "Confirmer le don",
+    "saving": "Enregistrement…",
+    "not_eligible": "Pas encore éligible (90 jours)",
+    "saved_next": "Enregistré. Prochaine date éligible : {{date}}",
+    "error_save": "Impossible d’enregistrer le don.",
+    "history": "Historique",
+    "no_donations": "Aucun don enregistré pour le moment.",
+    "unit_singular": "unité",
+    "units_plural": "unités",
+    "loading": "Chargement…",
+    "donors_label": "Donneurs",
+    "available_label": "Disponibles",
+    "next_eligible": "prochaine date éligible : {{date}}"
   },
   "stories": {
     "ahmed": {
@@ -128,11 +219,13 @@
     }
   },
   "common": {
+    "back": "Retour",
     "loading": "Chargement...",
     "urgent": "URGENT",
     "respond": "Répondre",
     "details": "Détails",
-    "participate": "Participer"
+    "participate": "Participer",
+    "retry": "Réessayer"
   },
   "auth": {
     "login_title": "Content de te revoir",
@@ -150,6 +243,11 @@
     "phone_label": "Téléphone",
     "city_label": "Ville",
     "blood_type_label": "Groupe sanguin",
+    "age_label": "Âge",
+    "gender_label": "Sexe",
+    "gender_male": "Homme",
+    "gender_female": "Femme",
+    "gender_other": "Autre",
     "login_btn": "Se connecter",
     "register_btn": "S'inscrire",
     "no_account": "Vous n'avez pas de compte?",
@@ -188,7 +286,15 @@
     "availability_checkbox": "Je suis actuellement disponible pour donner mon sang",
     "update_success": "Profil mis à jour avec succès !",
     "update_failed": "Échec de la mise à jour. Réessayez.",
-    "select_group": "Sélectionnez votre groupe"
+    "select_group": "Sélectionnez votre groupe",
+    "last_donation": "Dernier don",
+    "next_eligible": "Prochain don éligible",
+    "eligible_badge": "Éligible",
+    "not_eligible_badge": "Temporairement indisponible",
+    "recent_donor_badge": "Donneur récent",
+    "recipient_name": "Nom du receveur",
+    "confirm_donation": "Confirmer le don",
+    "donation_history": "Historique des dons"
   },
   "dashboard": {
     "title": "Tableau de bord",
@@ -220,7 +326,11 @@
     "hide_contact": "Masquer contact",
     "donor": "Donneur",
     "phone": "Téléphone",
-    "email": "Email"
+    "email": "Email",
+    "accept": "Accepter",
+    "reject": "Refuser",
+    "accepted": "Acceptée",
+    "rejected": "Refusée"
   },
   "my_requests": {
     "title": "Mes demandes de sang",
@@ -263,7 +373,7 @@
         "donations": "Dons terminés"
       },
       "recent_users": "Inscriptions Récentes",
-      "recent_requests": "Dernières Demandes",
+      "recent_donations": "Derniers dons enregistrés",
       "view_all": "Tout voir"
     }
   },
@@ -295,5 +405,34 @@
     "history": "Historique des activités",
     "empty_history": "Aucune activité publique récente.",
     "not_found": "Utilisateur introuvable"
+  },
+  "certificate": {
+    "download": "Télécharger le Certificat",
+    "print": "Imprimer",
+    "verified": "Document vérifié par BloodConnect"
+  },
+  "chatbot": {
+    "title": "Assistant BloodConnect",
+    "subtitle": "Réponses rapides sur le don de sang",
+    "scope": "Je réponds uniquement aux questions liées au don de sang, au processus de don et aux centres de don à Oujda.",
+    "welcome": "Bonjour ! Je peux vous aider sur l'éligibilité au don, le déroulement du don et les centres de don à Oujda. Posez-moi une question simple et je vous répondrai clairement.",
+    "placeholder": "Écrivez votre message...",
+    "error": "Une erreur s'est produite. Veuillez réessayer.",
+    "suggestions": {
+      "where_label": "Où donner ?",
+      "where_question": "Où puis-je donner mon sang à Oujda ?",
+      "eligible_label": "Suis-je éligible ?",
+      "eligible_question": "Suis-je éligible pour donner mon sang ?",
+      "process_label": "Comment ça se passe ?",
+      "process_question": "Comment se déroule un don de sang ?"
+    }
+  },
+  "confirmation": {
+    "confirm_blood_received": "Confirmer la réception du sang",
+    "confirm_title": "Confirmer le don",
+    "confirm_question": "Confirmez-vous avoir reçu le don de sang de {{name}} ?",
+    "success": "Don confirmé avec succès !",
+    "view_certificate": "Voir le Certificat",
+    "certificate_id": "Référence Certificat"
   }
 }

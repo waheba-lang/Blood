@@ -1,0 +1,209 @@
+:root {
+    --p-bg: #fdfdfd;
+    --p-card: #ffffff;
+    --p-accent: #a82d2d;
+    --p-accent-pale: #fff5f5;
+    --p-text: #1a1a1a;
+    --p-text-light: #6b7280;
+    --p-border: #f1f5f9;
+    --p-radius: 28px;
+    --p-shadow-soft: 0 4px 20px rgba(0, 0, 0, 0.03);
+}
+
+.profile-container {
+    padding: 2rem 0;
+    animation: fadeInSoft 0.8s ease-out;
+}
+
+@keyframes fadeInSoft {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* --- Hero --- */
+.profile-hero {
+    display: flex;
+    align-items: center;
+    gap: 3rem;
+    margin-bottom: 4rem;
+    background: white;
+    padding: 3rem;
+    border-radius: var(--p-radius);
+    box-shadow: var(--p-shadow-soft);
+    border: 1px solid var(--p-border);
+}
+
+.profile-avatar-container {
+    width: 160px;
+    height: 160px;
+    border-radius: 50%;
+    background: #f8fafc;
+    border: 6px solid #fff;
+    box-shadow: 0 10px 25px -5px rgba(0,0,0,0.06);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 4rem;
+    font-weight: 800;
+    color: var(--p-accent);
+    background-size: cover;
+    background-position: center;
+    position: relative;
+    transition: transform 0.3s ease;
+}
+
+.profile-avatar-container:hover {
+    transform: translateY(-5px);
+}
+
+.avatar-edit-btn {
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
+    width: 44px;
+    height: 44px;
+    background: var(--p-accent);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 5px 15px rgba(168, 45, 45, 0.3);
+    border: 3px solid #fff;
+}
+
+.profile-header-info h1 {
+    font-size: 2.75rem;
+    font-weight: 800;
+    margin: 0;
+    color: var(--p-text);
+    letter-spacing: -1px;
+}
+
+.profile-badges {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+/* --- Grid & Cards --- */
+.profile-grid-main {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr;
+    gap: 2rem;
+}
+
+.glass-card {
+    background: white;
+    border-radius: var(--p-radius);
+    padding: 2.5rem;
+    box-shadow: var(--p-shadow-soft);
+    border: 1px solid var(--p-border);
+}
+
+.card-title {
+    font-size: 1.35rem;
+    font-weight: 800;
+    margin-bottom: 2rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    color: var(--p-text);
+}
+
+/* --- Info Items --- */
+.info-grid-modern {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+}
+
+.info-box-modern {
+    padding: 1.5rem;
+    border-radius: 20px;
+    background: #fcfcfc;
+    border: 1px solid #f8fafc;
+}
+
+.info-box-modern label {
+    display: block;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--p-text-light);
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+}
+
+.info-box-modern div {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--p-text);
+}
+
+/* --- Status Labels --- */
+.status-card-lite {
+    padding: 2rem;
+    border-radius: var(--p-radius);
+    background: white;
+    border: 1px solid var(--p-border);
+    box-shadow: var(--p-shadow-soft);
+    margin-bottom: 2rem;
+}
+
+.status-tag {
+    display: inline-block;
+    padding: 0.5rem 1.25rem;
+    border-radius: 50px;
+    font-size: 0.85rem;
+    font-weight: 800;
+}
+
+.status-tag.active { background: #ecfdf5; color: #059669; }
+.status-tag.waiting { background: #fefce8; color: #a16207; }
+
+/* --- Forms --- */
+.input-modern {
+    width: 100%;
+    padding: 1rem 1.25rem;
+    border-radius: 16px;
+    background: #f8fafc;
+    border: 1.5px solid #e2e8f0;
+    font-weight: 600;
+    transition: all 0.2s;
+}
+
+.input-modern:focus {
+    background: white;
+    border-color: var(--p-accent);
+    outline: none;
+    box-shadow: 0 0 0 4px rgba(168, 45, 45, 0.1);
+}
+
+/* --- History --- */
+.history-item-modern {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem;
+    background: white;
+    border-radius: 24px;
+    margin-bottom: 1rem;
+    border: 1px solid var(--p-border);
+    transition: all 0.3s;
+}
+
+.history-item-modern:hover {
+    border-color: var(--p-accent);
+    transform: translateX(5px);
+}
+
+@media (max-width: 1024px) {
+    .profile-hero { flex-direction: column; padding: 2rem; text-align: center; }
+    .profile-grid-main { grid-template-columns: 1fr; }
+    .profile-badges { justify-content: center; }
+}
+
+@media (max-width: 640px) {
+    .info-grid-modern { grid-template-columns: 1fr; }
+}

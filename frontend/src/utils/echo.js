@@ -10,7 +10,7 @@ const echo = new Echo({
     wsPort: 8080,
     forceTLS: false,
     enabledTransports: ['ws', 'wss'],
-    authEndpoint: 'http://127.0.0.1:8000/api/broadcasting/auth',
+    authEndpoint: (import.meta.env.VITE_API_URL || 'http://127.0.0.1:8000/api') + '/broadcasting/auth',
     auth: {
         headers: {
             Authorization: `Bearer ${localStorage.getItem('token')}`,

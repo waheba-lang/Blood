@@ -1,11 +1,18 @@
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, Outlet, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { useAuth } from '../context/AuthContext';
 
 const AdminLayout = ({ children }) => {
   const { t, i18n } = useTranslation();
   const location = useLocation();
+  const navigate = useNavigate();
+  const { logout } = useAuth();
 
   const isRtl = i18n.language === 'ar';
+
+  const handleLogout = async () => {
+    await logout();
+  };
 
   const sidebarStyle = {
     width: '260px',
@@ -55,15 +62,34 @@ const AdminLayout = ({ children }) => {
         <Link to="/admin/dashboard" style={linkStyle('/admin/dashboard')}>
           <span style={{ fontSize: '1.2rem' }}>📊</span> {t('admin.sidebar.overview')}
         </Link>
+        <Link to="/admin/operations" style={linkStyle('/admin/operations')}>
+          <span style={{ fontSize: '1.2rem' }}>🏥</span> Dashboard
+        </Link>
+        <Link to="/admin/statistics" style={linkStyle('/admin/statistics')}>
+          <span style={{ fontSize: '1.2rem' }}>📈</span> Statistics
+        </Link>
         <Link to="/admin/users" style={linkStyle('/admin/users')}>
           <span style={{ fontSize: '1.2rem' }}>👥</span> {t('admin.sidebar.users')}
         </Link>
-        <Link to="/admin/content" style={linkStyle('/admin/content')}>
-          <span style={{ fontSize: '1.2rem' }}>📝</span> {t('admin.sidebar.content')}
-        </Link>
+        <div style={{ marginTop: 'auto', paddingTop: '1rem', borderTop: '1px solid var(--border)' }}>
+          <button
+            onClick={handleLogout}
+            style={{
+              ...linkStyle(''),
+              width: '100%',
+              border: 'none',
+              cursor: 'pointer',
+              textAlign: isRtl ? 'right' : 'left',
+              backgroundColor: 'rgba(230, 57, 70, 0.1)',
+              color: 'var(--primary)'
+            }}
+          >
+            <span style={{ fontSize: '1.2rem' }}>🚪</span> {t('logout') || 'Logout'}
+          </button>
+        </div>
       </aside>
       <main style={contentStyle}>
-        {children}
+        {children || <Outlet />}
       </main>
     </div>
   );

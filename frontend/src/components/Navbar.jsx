@@ -1,34 +1,28 @@
 import { useState, useEffect } from 'react';
-import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { useTranslation } from 'react-i18next';
-import axios from '../utils/axios';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { Bell, ChevronDown, Globe, LogOut, User, Home, Search, Target, Info, Droplet } from 'lucide-react';
+import './Navbar.css';
 
-export default function Navbar() {
+export default function Navbar({ logo = "/bloodconnect-logo.png", logoAlt = "BloodConnect Logo" }) {
   const { user, logout } = useAuth();
   const { t, i18n } = useTranslation();
   const navigate = useNavigate();
   const location = useLocation();
-  const [isMobileOpen, setIsMobileOpen] = useState(false);
-  const [unreadCount, setUnreadCount] = useState(0);
 
-  const fetchUnreadCount = async () => {
-    try {
-      const res = await axios.get('/notifications');
-      const unread = res.data.filter(n => !n.is_read).length;
-      setUnreadCount(unread);
-    } catch (err) {
-      console.error('Error fetching notifications:', err);
-    }
-  };
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [profileDropdownOpen, setProfileDropdownOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
 
+  // Add scroll effect for glassmorphism intensity
   useEffect(() => {
-    if (user) {
-      fetchUnreadCount();
-      const interval = setInterval(fetchUnreadCount, 30000);
-      return () => clearInterval(interval);
-    }
-  }, [user]);
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 20);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   const toggleLanguage = () => {
     const nextLng = i18n.language === 'fr' ? 'ar' : 'fr';
@@ -37,154 +31,200 @@ export default function Navbar() {
 
   const handleLogout = async () => {
     await logout();
-    navigate('/');
-    setIsMobileOpen(false);
+    setProfileDropdownOpen(false);
+    setIsMobileMenuOpen(false);
+    navigate('/login');
   };
 
-  const isActive = (path) => location.pathname === path;
+  const isExternalLink = href =>
+    href.startsWith('http://') ||
+    href.startsWith('https://') ||
+    href.startsWith('//') ||
+    href.startsWith('mailto:') ||
+    href.startsWith('tel:') ||
+    href.startsWith('#');
+
+  const isRouterLink = href => href && !isExternalLink(href);
+
+  // Adding Icons to NavItems for the modern look
+  const navItems = user ? [
+    { label: t('nav.home') || 'Home', href: '/', icon: Home },
+    { label: t('nav.find_donors') || 'Find Donors', href: '/find-donors', icon: Search },
+    { label: t('nav.campaigns') || 'Campaigns', href: '/campaigns', icon: Target },
+    { label: t('À propos') || 'About', href: '/about', icon: Info },
+    { label: t('nav.my_donations') || 'My Donations', href: '/my-donations', icon: Droplet }
+  ] : [
+    { label: t('nav.home') || 'Home', href: '/', icon: Home },
+    { label: t('nav.register') || 'Register', href: '/register', icon: User },
+    { label: t('À propos') || 'About', href: '/about', icon: Info }
+  ];
 
   return (
-    <header className="header" style={{ position: 'sticky', top: 0, zIndex: 1000, background: 'rgba(255, 255, 255, 0.8)', backdropFilter: 'blur(12px)', borderBottom: '1px solid rgba(0,0,0,0.05)' }}>
-      <div className="container header-container" style={{ height: '80px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-        <div className="logo-section">
-          <Link to="/" className="logo" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-            <span className="logo-icon" style={{ fontSize: '2rem' }}>🩸</span>
-            <span className="logo-text" style={{ fontSize: '1.5rem', fontWeight: 900, color: 'var(--text-dark)' }}>Blood<span className="logo-highlight" style={{ color: 'var(--primary)' }}>Connect</span></span>
+    <div className={`modern-navbar-container ${scrolled ? 'scrolled' : ''}`}>
+      <nav className="modern-navbar" aria-label="Primary">
+        
+        {/* Logo Section */}
+        {isRouterLink(navItems?.[0]?.href) ? (
+          <Link className="nav-logo" to={navItems[0].href} aria-label="Home">
+            <img src={logo} alt={logoAlt} />
+            <span className="desktop-only" style={{ display: 'flex' }}>BloodConnect</span>
           </Link>
+        ) : (
+          <a className="nav-logo" href={navItems?.[0]?.href || '#'} aria-label="Home">
+            <img src={logo} alt={logoAlt} />
+            <span className="desktop-only" style={{ display: 'flex' }}>BloodConnect</span>
+          </a>
+        )}
+
+        {/* Desktop Navigation Menu */}
+        <ul className="nav-menu desktop-only" role="menubar">
+          {navItems.map((item, i) => {
+            const isActive = location.pathname === item.href;
+            const linkClass = `nav-link ${isActive ? 'active' : ''}`;
+            const Icon = item.icon;
+
+            return (
+              <li key={item.href || `item-${i}`} className="nav-item" role="none">
+                {isRouterLink(item.href) ? (
+                  <Link role="menuitem" to={item.href} className={linkClass} aria-label={item.ariaLabel || item.label}>
+                    {Icon && <Icon size={18} />}
+                    {item.label}
+                  </Link>
+                ) : (
+                  <a role="menuitem" href={item.href} className={linkClass} aria-label={item.ariaLabel || item.label}>
+                    {Icon && <Icon size={18} />}
+                    {item.label}
+                  </a>
+                )}
+              </li>
+            );
+          })}
+        </ul>
+        
+        {/* Right side actions (Desktop) */}
+        <div className="nav-actions desktop-only">
+          <button className="action-icon-btn" title="Toggle Language" onClick={toggleLanguage}>
+            <Globe size={20} />
+          </button>
+          
+          {user && (
+            <button className="action-icon-btn" title="Notifications">
+              <Bell size={20} />
+              <span className="nav-badge"></span>
+            </button>
+          )}
+
+          <div className="nav-divider"></div>
+
+          {user ? (
+            <div className="nav-profile-container">
+              <button 
+                className={`nav-profile-btn ${profileDropdownOpen ? 'open' : ''}`}
+                onClick={() => setProfileDropdownOpen(!profileDropdownOpen)}
+                aria-expanded={profileDropdownOpen}
+              >
+                <div className="nav-avatar">
+                  {user.avatar_url ? <img src={user.avatar_url} alt="Avatar" style={{width: '100%', height: '100%', borderRadius: '50%', objectFit: 'cover'}}/> : user.name.charAt(0)}
+                </div>
+                <div className="nav-user-info">
+                  <span className="nav-user-name">{user.name.split(' ')[0]}</span>
+                  <span className="nav-user-role">{user.role}</span>
+                </div>
+                <ChevronDown size={16} style={{ color: 'var(--text-muted)', transition: 'transform 0.3s', transform: profileDropdownOpen ? 'rotate(180deg)' : 'none' }} />
+              </button>
+
+              <div className={`nav-dropdown ${profileDropdownOpen ? 'open' : ''}`}>
+                <Link to="/profile" className="nav-dropdown-item" onClick={() => setProfileDropdownOpen(false)}>
+                  <User size={18} /> {t('nav.profile') || 'Profile'}
+                </Link>
+                <button className="nav-dropdown-item danger" onClick={handleLogout}>
+                  <LogOut size={18} /> {t('nav.logout') || 'Logout'}
+                </button>
+              </div>
+            </div>
+          ) : (
+            <Link to="/login" className="nav-login-btn">
+              {t('nav.login') || 'Login'}
+            </Link>
+          )}
         </div>
 
-        <button className="mobile-toggle" onClick={() => setIsMobileOpen(!isMobileOpen)} style={{ display: 'none' }}>
-          ☰
+        {/* Mobile Hamburger Button */}
+        <button
+          className={`hamburger-btn mobile-only ${isMobileMenuOpen ? 'open' : ''}`}
+          onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+          aria-label="Toggle menu"
+        >
+          <span className="hamburger-line" />
+          <span className="hamburger-line" />
+          <span className="hamburger-line" />
         </button>
+      </nav>
 
-        <nav className={`nav-menu ${isMobileOpen ? 'active' : ''}`} style={{ display: 'flex', gap: '2rem' }}>
-          <Link to="/" className={`nav-link ${isActive('/') ? 'active' : ''}`} style={{ textDecoration: 'none', fontWeight: 600, color: isActive('/') ? 'var(--primary)' : 'var(--text-muted)' }} onClick={() => setIsMobileOpen(false)}>{t('nav.home')}</Link>
-          <Link to="/about" className={`nav-link ${isActive('/about') ? 'active' : ''}`} style={{ textDecoration: 'none', fontWeight: 600, color: isActive('/about') ? 'var(--primary)' : 'var(--text-muted)' }} onClick={() => setIsMobileOpen(false)}>{t('nav.about')}</Link>
-          <Link to="/campaigns" className={`nav-link ${isActive('/campaigns') ? 'active' : ''}`} style={{ textDecoration: 'none', fontWeight: 600, color: isActive('/campaigns') ? 'var(--primary)' : 'var(--text-muted)' }} onClick={() => setIsMobileOpen(false)}>{t('nav.campaigns')}</Link>
-          <Link to="/impact" className={`nav-link ${isActive('/impact') ? 'active' : ''}`} style={{ textDecoration: 'none', fontWeight: 600, color: isActive('/impact') ? 'var(--primary)' : 'var(--text-muted)' }} onClick={() => setIsMobileOpen(false)}>{t('nav.impact')}</Link>
-          <Link to="/requests" className={`nav-link ${isActive('/requests') ? 'active' : ''}`} style={{ textDecoration: 'none', fontWeight: 600, color: isActive('/requests') ? 'var(--primary)' : 'var(--text-muted)' }} onClick={() => setIsMobileOpen(false)}>{t('nav.requests')}</Link>
-          {user && (
-            <Link to="/dashboard" className={`nav-link ${isActive('/dashboard') ? 'active' : ''}`} style={{ textDecoration: 'none', fontWeight: 600, color: isActive('/dashboard') ? 'var(--primary)' : 'var(--text-muted)' }} onClick={() => setIsMobileOpen(false)}>{t('nav.dashboard')}</Link>
-          )}
-        </nav>
+      {/* Mobile Menu Overlay & Drawer */}
+      <div className={`mobile-menu-overlay ${isMobileMenuOpen ? 'open' : ''}`} onClick={() => setIsMobileMenuOpen(false)}></div>
+      <div className={`mobile-menu-drawer ${isMobileMenuOpen ? 'open' : ''}`}>
+        
+        {/* User Info Header for Mobile */}
+        {user && (
+          <div style={{ display: 'flex', alignItems: 'center', gap: '15px', paddingBottom: '1rem', borderBottom: '1px solid rgba(0,0,0,0.05)', marginBottom: '0.5rem' }}>
+            <div className="nav-avatar" style={{ width: '50px', height: '50px', fontSize: '1.2rem' }}>
+              {user.avatar_url ? <img src={user.avatar_url} alt="Avatar" style={{width: '100%', height: '100%', borderRadius: '50%', objectFit: 'cover'}}/> : user.name.charAt(0)}
+            </div>
+            <div>
+              <div style={{ fontWeight: 800, fontSize: '1.2rem', color: 'var(--text-primary)' }}>{user.name}</div>
+              <div style={{ color: 'var(--text-muted)', fontSize: '0.85rem', fontWeight: 600, textTransform: 'uppercase' }}>{user.role}</div>
+            </div>
+          </div>
+        )}
 
-        <div className="auth-buttons" style={{ display: 'flex', alignItems: 'center', gap: '1.5rem' }}>
-          <button onClick={toggleLanguage} className="lang-switcher" style={{ 
-            background: 'rgba(0,0,0,0.05)', 
-            border: 'none', 
-            borderRadius: '8px', 
-            padding: '0.4rem 0.8rem', 
-            fontWeight: 700, 
-            cursor: 'pointer',
-            color: 'var(--text-dark)',
-            fontSize: '0.9rem',
-            minWidth: '45px'
-          }}>
-            {i18n.language === 'fr' ? 'ع' : 'FR'}
+        <ul className="mobile-nav-list">
+          {navItems.map((item, i) => {
+            const isActive = location.pathname === item.href;
+            const linkClass = `mobile-nav-link ${isActive ? 'active' : ''}`;
+            const Icon = item.icon;
+
+            return (
+              <li key={item.href || `mobile-item-${i}`}>
+                {isRouterLink(item.href) ? (
+                  <Link to={item.href} className={linkClass} onClick={() => setIsMobileMenuOpen(false)}>
+                    {Icon && <Icon size={20} />}
+                    {item.label}
+                  </Link>
+                ) : (
+                  <a href={item.href} className={linkClass} onClick={() => setIsMobileMenuOpen(false)}>
+                    {Icon && <Icon size={20} />}
+                    {item.label}
+                  </a>
+                )}
+              </li>
+            );
+          })}
+        </ul>
+        
+        {/* Mobile Actions */}
+        <div className="mobile-actions">
+          <button className="mobile-action-btn secondary" onClick={() => { toggleLanguage(); setIsMobileMenuOpen(false); }}>
+            <Globe size={18} />
+            Changer la Langue
           </button>
-
-          {!user ? (
+          
+          {user ? (
             <>
-              <Link to="/login" className="btn btn-outline" style={{ borderRadius: '12px', padding: '0.6rem 1.2rem' }} onClick={() => setIsMobileOpen(false)}>{t('nav.login')}</Link>
-              <Link to="/register" className="btn btn-primary" style={{ borderRadius: '12px', padding: '0.6rem 1.2rem', background: 'var(--primary)', color: 'white', textDecoration: 'none' }} onClick={() => setIsMobileOpen(false)}>{t('nav.register')}</Link>
+              <Link to="/profile" className="mobile-action-btn secondary" style={{ textDecoration: 'none' }} onClick={() => setIsMobileMenuOpen(false)}>
+                <User size={18} /> {t('nav.profile') || 'Profile'}
+              </Link>
+              <button className="mobile-action-btn danger" onClick={handleLogout}>
+                <LogOut size={18} /> {t('nav.logout') || 'Logout'}
+              </button>
             </>
           ) : (
-            <div className="user-profile-nav" style={{ display: 'flex', gap: '1.25rem', alignItems: 'center' }}>
-              <Link to="/messages" style={{ textDecoration: 'none', color: 'var(--text-dark)', fontSize: '1.4rem', display: 'flex', alignItems: 'center' }}>
-                💬
-              </Link>
-
-              <Link to="/notifications" style={{ position: 'relative', textDecoration: 'none', color: 'var(--text-dark)', fontSize: '1.4rem', display: 'flex', alignItems: 'center' }}>
-                🔔
-                {unreadCount > 0 && (
-                  <span style={{ 
-                    position: 'absolute', 
-                    top: '-5px', 
-                    right: '-5px', 
-                    background: 'var(--primary)', 
-                    color: 'white', 
-                    fontSize: '0.65rem', 
-                    fontWeight: 900, 
-                    width: '18px', 
-                    height: '18px', 
-                    borderRadius: '50%', 
-                    display: 'flex', 
-                    alignItems: 'center', 
-                    justifyContent: 'center',
-                    boxShadow: '0 0 0 2px white'
-                  }}>
-                    {unreadCount > 9 ? '9+' : unreadCount}
-                  </span>
-                )}
-              </Link>
-
-              <Link to="/profile" className="btn-profile" style={{ 
-                display: 'flex', 
-                alignItems: 'center', 
-                gap: '0.75rem', 
-                textDecoration: 'none', 
-                color: 'var(--text-dark)', 
-                fontWeight: 700,
-                background: 'rgba(0,0,0,0.03)',
-                padding: '0.4rem 1rem 0.4rem 0.4rem',
-                borderRadius: '30px',
-                transition: 'all 0.2s ease'
-              }}>
-                <div style={{ 
-                  width: '36px', 
-                  height: '36px', 
-                  borderRadius: '50%', 
-                  background: 'linear-gradient(135deg, var(--primary) 0%, #ff4d6d 100%)', 
-                  color: 'white', 
-                  display: 'flex', 
-                  alignItems: 'center', 
-                  justifyContent: 'center', 
-                  fontSize: '1rem',
-                  boxShadow: '0 4px 10px rgba(230, 57, 70, 0.3)'
-                }}>
-                  {user.name.charAt(0).toUpperCase()}
-                </div>
-                <span style={{ fontSize: '0.95rem' }} className="profile-text">{t('nav.profile')}</span>
-              </Link>
-
-              <button onClick={handleLogout} className="btn btn-outline" style={{ padding: '0.5rem 1rem', fontSize: '0.85rem', borderRadius: '10px' }}>
-                {t('nav.logout')}
-              </button>
-            </div>
+            <Link to="/login" className="mobile-action-btn secondary" style={{ textDecoration: 'none', background: 'rgba(104, 26, 21, 0.1)', color: 'var(--primary)' }} onClick={() => setIsMobileMenuOpen(false)}>
+              <User size={18} /> {t('nav.login') || 'Login'}
+            </Link>
           )}
         </div>
       </div>
-      
-      <style dangerouslySetInnerHTML={{ __html: `
-        @media (max-width: 991px) {
-          .mobile-toggle { display: block !important; background: none; border: none; font-size: 1.5rem; cursor: pointer; }
-          .nav-menu { 
-            display: none; 
-            position: absolute; 
-            top: 80px; 
-            left: 0; 
-            right: 0; 
-            background: white; 
-            flex-direction: column; 
-            padding: 2rem; 
-            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); 
-            z-index: 1000;
-          }
-          .nav-menu.active { display: flex; }
-          .auth-buttons { display: none; }
-        }
-        .btn-profile:hover {
-          background: rgba(0,0,0,0.06) !important;
-          transform: translateY(-2px);
-        }
-        [dir="rtl"] .logo-section { margin-left: auto; margin-right: 0; }
-        [dir="rtl"] .auth-buttons { margin-right: auto; margin-left: 0; }
-        [dir="rtl"] .logo { flex-direction: row-reverse; }
-        @media (max-width: 768px) {
-          .profile-text { display: none; }
-        }
-      `}} />
-    </header>
+    </div>
   );
 }
-

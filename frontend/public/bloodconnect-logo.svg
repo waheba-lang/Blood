@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-label="BloodConnect logo">
+  <defs>
+    <linearGradient id="bc-g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#3498db"/>
+      <stop offset="1" stop-color="#1abc9c"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Connection nodes -->
+  <circle cx="18" cy="20" r="6" fill="url(#bc-g)"/>
+  <circle cx="46" cy="20" r="6" fill="url(#bc-g)"/>
+  <path d="M24 20 H40" stroke="url(#bc-g)" stroke-width="4" stroke-linecap="round"/>
+
+  <!-- Blood drop -->
+  <path
+    d="M32 6
+       C26 14, 18 23, 18 32
+       A14 14 0 1 0 46 32
+       C46 23, 38 14, 32 6 Z"
+    fill="url(#bc-g)"
+  />
+</svg>

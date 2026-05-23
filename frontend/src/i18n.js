@@ -13,19 +13,27 @@ i18n
       ar: { translation: ar }
     },
     fallbackLng: 'fr',
+    supportedLngs: ['fr', 'ar'],
+    nonExplicitSupportedLngs: true,
+    load: 'languageOnly',
     interpolation: {
       escapeValue: false
     },
     detection: {
-      order: ['localStorage', 'cookie', 'navigator'],
-      caches: ['localStorage']
+      order: ['localStorage', 'navigator'],
+      caches: ['localStorage'],
+      lookupLocalStorage: 'i18nextLng'
     }
   });
 
+document.documentElement.lang = i18n.language.startsWith('ar') ? 'ar' : 'fr';
+document.documentElement.dir = i18n.language.startsWith('ar') ? 'rtl' : 'ltr';
+
 // Handle RTL direction change
 i18n.on('languageChanged', (lng) => {
-  document.documentElement.dir = lng === 'ar' ? 'rtl' : 'ltr';
-  document.documentElement.lang = lng;
+  const ar = lng.startsWith('ar');
+  document.documentElement.dir = ar ? 'rtl' : 'ltr';
+  document.documentElement.lang = ar ? 'ar' : 'fr';
 });
 
 export default i18n;

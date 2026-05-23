@@ -2,17 +2,32 @@ import { useState, useEffect } from 'react';
 import axios from '../utils/axios';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { Users, Droplet, CheckCircle2, ArrowRight, UserPlus, History, Target, Check, X } from 'lucide-react';
 import Card from '../components/Card';
-import AdminLayout from '../components/AdminLayout';
 
+/**
+ * AdminDashboard Page Component
+ * 
+ * Provides an overview for administrators.
+ * Shows total statistics, recent users, recent donations, and allows admins
+ * to approve or reject new campaign requests.
+ */
 export default function AdminDashboard() {
   const { t, i18n } = useTranslation();
   const [data, setData] = useState(null);
+  const [campaigns, setCampaigns] = useState([]);
   const [loading, setLoading] = useState(true);
 
   const isRtl = i18n.language === 'ar';
 
+  const fetchCampaigns = () => {
+    axios.get('/admin/campaigns')
+      .then(res => setCampaigns(res.data))
+      .catch(console.error);
+  };
+
   useEffect(() => {
+    fetchCampaigns();
     axios.get('/admin/stats')
       .then(res => {
         setData(res.data);
@@ -24,104 +39,179 @@ export default function AdminDashboard() {
       });
   }, []);
 
-  if (loading) return <AdminLayout><div className="loading">{t('common.loading')}</div></AdminLayout>;
+  const handleCampaignStatus = async (id, status) => {
+    try {
+      await axios.patch(`/campaigns/${id}/status`, { approval_status: status });
+      fetchCampaigns();
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  if (loading) {
+    return (
+      <div className="bms-page">
+        <div className="stats-dashboard--center" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: '60vh' }}>
+          <Droplet size={64} className="stats-spin" />
+          <p className="stats-muted">{t('common.loading')}</p>
+        </div>
+      </div>
+    );
+  }
 
   const stats = data?.stats || {};
   const recent = data?.recent_activity || {};
 
   const statCards = [
-    { label: t('admin.dashboard.stats.total_users'), value: stats.total_users, color: '#4cc9f0', icon: '👤' },
-    { label: t('admin.dashboard.stats.donors'), value: stats.total_donors, color: '#4361ee', icon: '🩸' },
-    { label: t('admin.dashboard.stats.requests'), value: stats.total_requests, color: '#f72585', icon: '📋' },
-    { label: t('admin.dashboard.stats.donations'), value: stats.total_donations, color: '#4caf50', icon: '✅' },
+    { label: t('admin.dashboard.stats.total_users'), value: stats.total_users, color: 'var(--secondary)', icon: Users },
+    { label: t('admin.dashboard.stats.donors'), value: stats.total_donors, color: 'var(--primary)', icon: Droplet },
+    { label: t('admin.dashboard.stats.donations'), value: stats.total_donations, color: '#059669', icon: CheckCircle2 },
   ];
 
   return (
-    <AdminLayout>
-      <div style={{ marginBottom: '2.5rem', textAlign: isRtl ? 'right' : 'left' }}>
-        <h1 style={{ marginBottom: '0.5rem', fontSize: '2rem', fontWeight: '800' }}>{t('admin.dashboard.title')}</h1>
-        <p style={{ color: '#666' }}>{t('admin.dashboard.subtitle')}</p>
+    <div className="bms-page">
+      <div style={{ marginBottom: '3rem', textAlign: isRtl ? 'right' : 'left' }} className="reveal">
+        <h1 style={{ marginBottom: '0.5rem', fontSize: '2.25rem', fontWeight: '900', color: 'var(--text-primary)' }}>{t('admin.dashboard.title')}</h1>
+        <p className="stats-muted" style={{ fontSize: '1.1rem' }}>{t('admin.dashboard.subtitle')}</p>
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '1.5rem', marginBottom: '3rem', direction: isRtl ? 'rtl' : 'ltr' }}>
-        {statCards.map((stat, i) => (
-          <div key={i} className="glass-panel" style={{ padding: '1.5rem', display: 'flex', alignItems: 'center', gap: '1.5rem', flexDirection: isRtl ? 'row-reverse' : 'row' }}>
-            <div style={{ 
-              width: '60px', 
-              height: '60px', 
-              borderRadius: '16px', 
-              backgroundColor: `${stat.color}15`, 
-              display: 'flex', 
-              alignItems: 'center', 
-              justifyContent: 'center',
-              fontSize: '1.5rem',
-              color: stat.color
-            }}>
-              {stat.icon}
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '2rem', marginBottom: '4rem', direction: isRtl ? 'rtl' : 'ltr' }}>
+        {statCards.map((stat, i) => {
+          const Icon = stat.icon;
+          return (
+            <div key={i} className="glass-panel reveal" style={{ padding: '2rem', display: 'flex', alignItems: 'center', gap: '1.5rem', border: '1px solid rgba(0,0,0,0.03)' }}>
+              <div style={{
+                width: '70px',
+                height: '70px',
+                borderRadius: '20px',
+                backgroundColor: `${stat.color}15`,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                color: stat.color,
+                boxShadow: `0 8px 20px ${stat.color}10`
+              }}>
+                <Icon size={32} />
+              </div>
+              <div style={{ textAlign: isRtl ? 'right' : 'left' }}>
+                <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)', fontWeight: '800', textTransform: 'uppercase', marginBottom: '0.4rem', letterSpacing: '0.5px' }}>{stat.label}</p>
+                <h2 style={{ fontSize: '2.25rem', fontWeight: '900', color: 'var(--text-primary)', margin: 0, lineHeight: 1 }}>{stat.value}</h2>
+              </div>
             </div>
-            <div style={{ textAlign: isRtl ? 'right' : 'left' }}>
-              <p style={{ fontSize: '0.9rem', color: '#888', fontWeight: '600', marginBottom: '0.2rem' }}>{stat.label}</p>
-              <h2 style={{ fontSize: '1.8rem', fontWeight: '800', margin: 0 }}>{stat.value}</h2>
-            </div>
+          );
+        })}
+      </div>
+
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(400px, 1fr))', gap: '2.5rem', direction: isRtl ? 'rtl' : 'ltr' }}>
+        {/* Recent Users Card */}
+        <div className="glass-panel reveal" style={{ padding: '2rem' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
+            <h2 style={{ fontSize: '1.25rem', fontWeight: '900', display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+              <UserPlus size={20} color="var(--primary)" />
+              {t('admin.dashboard.recent_users')}
+            </h2>
+            <Link to="/admin/users" className="bms-status-pill bms-status-pill--wait" style={{ textDecoration: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+              {t('admin.dashboard.view_all')}
+              <ArrowRight size={14} />
+            </Link>
           </div>
-        ))}
-      </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(400px, 1fr))', gap: '2rem', direction: isRtl ? 'rtl' : 'ltr' }}>
-        <Card>
-          <div style={{ padding: '0.5rem', textAlign: isRtl ? 'right' : 'left' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem', flexDirection: isRtl ? 'row-reverse' : 'row' }}>
-              <h2 style={{ fontSize: '1.2rem', fontWeight: '700' }}>{t('admin.dashboard.recent_users')}</h2>
-              <Link to="/admin/users" style={{ fontSize: '0.8rem', color: 'var(--primary)', fontWeight: '600', textDecoration: 'none', cursor: 'pointer' }}>{t('admin.dashboard.view_all')}</Link>
-            </div>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-              {recent.users?.map(u => (
-                <div key={u.id} style={{ display: 'flex', alignItems: 'center', gap: '1rem', padding: '0.8rem', borderRadius: '12px', background: '#fcfcfc', border: '1px solid #f1f1f1', flexDirection: isRtl ? 'row-reverse' : 'row' }}>
-                  <div style={{ width: '40px', height: '40px', borderRadius: '50%', background: 'linear-gradient(135deg, #e63946, #f1faee)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white', fontWeight: 'bold' }}>
-                    {u.name.charAt(0).toUpperCase()}
-                  </div>
-                  <div style={{ flex: 1, textAlign: isRtl ? 'right' : 'left' }}>
-                    <p style={{ fontWeight: '700', fontSize: '0.95rem' }}>{u.name}</p>
-                    <p style={{ fontSize: '0.8rem', color: '#888' }}>{u.email}</p>
-                  </div>
-                  <div style={{ fontSize: '0.75rem', padding: '0.3rem 0.6rem', borderRadius: '20px', backgroundColor: u.role === 'donor' ? '#e1f5fe' : '#f3e5f5', color: u.role === 'donor' ? '#0288d1' : '#7b1fa2', fontWeight: '700', textTransform: 'capitalize' }}>
-                    {u.role === 'donor' ? t('public_profile.donor_rank') : t('public_profile.patient_rank')}
-                  </div>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+            {recent.users?.map(u => (
+              <div key={u.id} style={{ display: 'flex', alignItems: 'center', gap: '1.25rem', padding: '1.25rem', borderRadius: '20px', background: '#f8fafc', border: '1px solid rgba(0,0,0,0.02)', transition: 'transform 0.2s' }} className="hover-lift">
+                <div style={{ width: '50px', height: '50px', borderRadius: '16px', background: 'linear-gradient(135deg, var(--secondary), var(--primary))', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white', fontWeight: '900', fontSize: '1.1rem' }}>
+                  {u.name.charAt(0).toUpperCase()}
                 </div>
-              ))}
-            </div>
+                <div style={{ flex: 1 }}>
+                  <p style={{ fontWeight: '800', fontSize: '1rem', margin: 0, color: 'var(--text-primary)' }}>{u.name}</p>
+                  <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)', margin: 0 }}>{u.email}</p>
+                </div>
+                <span className="profile-stat-badge" style={{ background: u.role === 'donor' ? 'rgba(187, 202, 225, 0.2)' : 'rgba(104, 26, 21, 0.05)', color: u.role === 'donor' ? 'var(--secondary)' : 'var(--primary)' }}>
+                  {u.role === 'donor' ? t('public_profile.donor_rank') : t('public_profile.patient_rank')}
+                </span>
+              </div>
+            ))}
           </div>
-        </Card>
+        </div>
 
-        <Card>
-          <div style={{ padding: '0.5rem', textAlign: isRtl ? 'right' : 'left' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem', flexDirection: isRtl ? 'row-reverse' : 'row' }}>
-              <h2 style={{ fontSize: '1.2rem', fontWeight: '700' }}>{t('admin.dashboard.recent_requests')}</h2>
-              <Link to="/admin/content" style={{ fontSize: '0.8rem', color: 'var(--primary)', fontWeight: '600', textDecoration: 'none', cursor: 'pointer' }}>{t('admin.dashboard.view_all')}</Link>
-            </div>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-              {recent.requests?.map(r => (
-                <div key={r.id} style={{ display: 'flex', alignItems: 'center', gap: '1rem', padding: '0.8rem', borderRadius: '12px', background: '#fcfcfc', border: '1px solid #f1f1f1', flexDirection: isRtl ? 'row-reverse' : 'row' }}>
-                  <div style={{ width: '40px', height: '40px', borderRadius: '12px', backgroundColor: '#fff0f0', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--primary)', fontWeight: '800' }}>
-                    {r.blood_type}
+        {/* Recent Donations Card */}
+        <div className="glass-panel reveal" style={{ padding: '2rem' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
+            <h2 style={{ fontSize: '1.25rem', fontWeight: '900', display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+              <History size={20} color="var(--primary)" />
+              {t('admin.dashboard.recent_donations')}
+            </h2>
+          </div>
+
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+            {(recent.donations || []).map(d => (
+              <div key={d.id} style={{ display: 'flex', alignItems: 'center', gap: '1.25rem', padding: '1.25rem', borderRadius: '20px', background: '#f8fafc', border: '1px solid rgba(0,0,0,0.02)' }} className="hover-lift">
+                <div style={{ width: '50px', height: '50px', borderRadius: '16px', backgroundColor: 'rgba(5, 150, 105, 0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#059669', fontWeight: '900' }}>
+                  {d.quantity ?? 1}
+                </div>
+                <div style={{ flex: 1 }}>
+                  <p style={{ fontWeight: '800', fontSize: '1rem', margin: 0 }}>{d.user?.name || '—'}</p>
+                  <p className="stats-muted" style={{ fontSize: '0.8rem', margin: 0 }}>{d.status}</p>
+                </div>
+                <div style={{ textAlign: isRtl ? 'left' : 'right' }}>
+                  <p style={{ fontSize: '0.75rem', color: 'var(--text-muted)', fontWeight: '700' }}>
+                    {d.donation_date ? new Date(d.donation_date).toLocaleDateString() : ''}
+                  </p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Pending Campaigns Section */}
+      <div className="glass-panel reveal" style={{ padding: '2rem' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
+          <h2 style={{ fontSize: '1.25rem', fontWeight: '900', display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+            <Target size={20} color="var(--primary)" />
+            Demandes de Campagnes
+          </h2>
+        </div>
+
+        {campaigns.length === 0 ? (
+           <p className="stats-muted">Aucune demande de campagne.</p>
+        ) : (
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+            {campaigns.map(c => (
+              <div key={c.id} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '1.25rem', borderRadius: '20px', background: '#f8fafc', border: '1px solid rgba(0,0,0,0.02)' }}>
+                <div style={{ display: 'flex', gap: '1.25rem', alignItems: 'center' }}>
+                  <div style={{ width: '50px', height: '50px', borderRadius: '16px', backgroundColor: c.approval_status === 'pending' ? 'rgba(251, 191, 36, 0.1)' : c.approval_status === 'approved' ? 'rgba(16, 185, 129, 0.1)' : 'rgba(239, 68, 68, 0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: c.approval_status === 'pending' ? '#fbbf24' : c.approval_status === 'approved' ? '#10b981' : '#ef4444' }}>
+                    <Target size={24} />
                   </div>
-                  <div style={{ flex: 1, textAlign: isRtl ? 'right' : 'left' }}>
-                    <p style={{ fontWeight: '700', fontSize: '0.95rem' }}>{t('request_detail.title', { name: r.patient_name || t('home.hero.title') })}</p>
-                    <p style={{ fontSize: '0.8rem', color: '#888' }}>{r.hospital}, {r.city}</p>
-                  </div>
-                  <div style={{ textAlign: isRtl ? 'left' : 'right' }}>
-                    <p style={{ fontSize: '0.75rem', color: r.urgency === 'Critical' || r.urgency === 'Urgent' ? '#d32f2f' : '#ef6c00', fontWeight: '800' }}>
-                      {t(`new_request_form.urgency.${r.urgency.toLowerCase()}`)}
+                  <div>
+                    <h4 style={{ margin: '0 0 4px', fontWeight: 800 }}>{c.title}</h4>
+                    <p style={{ margin: 0, fontSize: '0.8rem', color: 'var(--text-muted)' }}>
+                      Par: {c.user?.name || c.organizer_name || 'Inconnu'} • {c.city} • {c.date}
                     </p>
-                    <p style={{ fontSize: '0.7rem', color: '#999' }}>{new Date(r.created_at).toLocaleDateString(isRtl ? 'ar-MA' : 'fr-FR')}</p>
                   </div>
                 </div>
-              ))}
-            </div>
+                
+                <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
+                  {c.approval_status === 'pending' ? (
+                    <>
+                      <button onClick={() => handleCampaignStatus(c.id, 'approved')} style={{ background: '#10b981', color: 'white', border: 'none', padding: '8px', borderRadius: '8px', cursor: 'pointer' }} title="Approuver">
+                        <Check size={18} />
+                      </button>
+                      <button onClick={() => handleCampaignStatus(c.id, 'rejected')} style={{ background: '#ef4444', color: 'white', border: 'none', padding: '8px', borderRadius: '8px', cursor: 'pointer' }} title="Rejeter">
+                        <X size={18} />
+                      </button>
+                    </>
+                  ) : (
+                    <span style={{ fontSize: '0.85rem', fontWeight: 800, color: c.approval_status === 'approved' ? '#10b981' : '#ef4444', textTransform: 'uppercase' }}>
+                      {c.approval_status}
+                    </span>
+                  )}
+                </div>
+              </div>
+            ))}
           </div>
-        </Card>
+        )}
       </div>
-    </AdminLayout>
+    </div>
   );
 }
-

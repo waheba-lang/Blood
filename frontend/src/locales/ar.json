@@ -1,15 +1,20 @@
 {
   "nav": {
     "home": "الرئيسية",
-    "about": "من نحن",
     "campaigns": "الحملات",
     "impact": "تأثيرنا",
-    "requests": "الطلبات",
     "dashboard": "لوحة التحكم",
     "login": "تسجيل الدخول",
     "register": "إنشاء حساب",
     "logout": "خروج",
-    "profile": "ملفي الشخصي"
+    "profile": "ملفي الشخصي",
+    "find_donors": "البحث عن متبرعين",
+    "statistics": "الإحصائيات",
+    "my_donations": "تبرعاتي"
+  },
+  "sidebar": {
+    "main_menu": "القائمة الرئيسية",
+    "my_activity": "نشاطي"
   },
   "home": {
     "hero_tag": "#التبرع_بالدم",
@@ -66,7 +71,20 @@
   "find_donors": {
     "title": "البحث عن متبرعين",
     "access_denied": "غير مسموح بالدخول",
-    "no_donors": "لا يوجد متبرعون متاحون لهذه المعايير."
+    "no_donors": "لا يوجد متبرعون متاحون لهذه المعايير.",
+    "login_required_title": "يلزم تسجيل الدخول",
+    "login_required_body": "يجب تسجيل الدخول للوصول إلى هذه الصفحة.",
+    "login_cta": "تسجيل الدخول",
+    "subtitle": "ابحث عن متبرع متوافق وتواصل معه مباشرة.",
+    "filter_available_only": "المرشح: المتاحون فقط",
+    "reset_filters": "إعادة تعيين المرشحات",
+    "brand_badge": "BloodConnect",
+    "unspecified_city": "غير محدد",
+    "available_badge": "متاح",
+    "unavailable_badge": "غير متاح",
+    "call": "اتصل",
+    "call_now": "اتصل الآن",
+    "donors_found_count": "{{count}} متبرع مطابق"
   },
   "donor_card": {
     "contact": "اتصال",
@@ -78,37 +96,110 @@
     "contact_title": "اتصل بنا",
     "rights": "تبرع بالدم المغرب. جميع الحقوق محفوظة."
   },
-  "about": {
-    "title": "حول BloodConnect",
-    "mission_title": "مهمتنا",
-    "mission_text": "تلتزم BloodConnect بتسهيل الوصول إلى الدم للأشخاص الذين يحتاجون بشكل عاجل إلى نقل الدم، وللمتبرعين الكرماء المستعدين لإنقاذ الأرواح. تستخدم منصتنا التكنولوجيا لجعل عملية التبرع أسرع وأبسط وأكثر شفافية.",
-    "for_donors_title": "للمتبرعين",
-    "for_donors_text": "ابق على اطلاع بسهولة على الطلبات العاجلة في مدينتك. تتبع تبرعاتك وقس تأثيرها بدقة على مجتمعك.",
-    "for_patients_title": "للمرضى والمستشفيات",
-    "for_patients_text": "انشر طلبات الدم العاجلة فوراً للمتبرعين المحليين. قلل أوقات الانتظار واتصل بسرعة بالمتطوعين المتاحين.",
-    "contact_us": "اتصل بنا",
-    "return_home": "العودة للرئيسية"
-  },
   "filters": {
     "label": "الفلاتر:",
     "all_groups": "جميع الفصائل",
     "all_urgencies": "جميع مستويات الاستعجال",
     "city_placeholder": "المدينة (مثلاً: وجدة)",
+    "name_placeholder": "البحث بالاسم...",
+    "available_only": "المتاحون فقط",
     "urgency": {
       "high": "عالية (عاجل جداً)",
       "medium": "متوسطة (عاجل)",
       "low": "منخفضة (عادي)"
     }
   },
-  "impact": {
-    "hero_title": "تأثيرنا",
-    "hero_desc": "اكتشف كيف يغير مجتمعنا حياة الناس كل يوم. وراء كل رقم، هناك قصة.",
-    "stats": {
-      "donors_label": "المتبرعون المسجلون",
-      "satisfied_label": "طلبات تمت تلبية احتياجاتها",
-      "pockets_label": "أكياس تم جمعها"
-    },
-    "community_stories": "قصص المجتمع"
+  "stats": {
+    "title": "إحصائيات التبرعات",
+    "description": "اعرض التبرعات حسب الفصيلة والشهر مع مرشحات ومخططات تفاعلية.",
+    "total_users": "المستخدمون المسجلون",
+    "available_donors": "المتبرعون المتاحون",
+    "unavailable_donors": "المتبرعون غير المتاحين",
+    "lives_saved": "الأرواح التي تم إنقاذها",
+    "total_donations": "إجمالي التبرعات",
+    "chart_donors_title": "حالة توافر المتبرعين",
+    "chart_platform_title": "نظرة عامة على المنصة",
+    "platform_stats": "إحصائيات المنصة",
+    "monthly_donations": "التبرعات الشهرية",
+    "error_title": "تعذر تحميل الإحصائيات",
+    "error_description": "نواجه صعوبة في الاتصال بالخادم. يرجى التحقق من اتصالك."
+  },
+  "stats_dashboard": {
+    "hero_title": "إحصائيات التبرع بالدم",
+    "hero_subtitle": "الوحدات المجمّعة حسب الفصيلة والشهر. صفِّ السنة أو الشهر أو الفصيلة لتحليل أدق.",
+    "filters_title": "عوامل التصفية",
+    "filter_year": "السنة",
+    "filter_month": "الشهر",
+    "filter_blood": "فصيلة الدم",
+    "all_months": "كل السنة",
+    "all_types": "كل الفصائل",
+    "chart_bar_stacked": "التبرعات حسب الشهر والفصيلة (مرصوص)",
+    "chart_bar_month_detail": "التوزيع حسب الفصيلة للشهر المحدد",
+    "chart_line": "تطور حجم التبرعات (وحدات)",
+    "chart_pie": "نسب الوحدات حسب فصيلة الدم",
+    "pie_hidden_hint": "المخطط الدائري العام يُخفى عند اختيار فصيلة واحدة.",
+    "summary_units_year": "إجمالي الوحدات للسنة",
+    "summary_records": "سجلات التبرع (صفوف)",
+    "table_by_month": "الإجمالي حسب الشهر",
+    "table_by_type": "الإجمالي حسب فصيلة الدم",
+    "col_month": "الشهر",
+    "col_type": "الفصيلة",
+    "col_units": "الوحدات",
+    "registered_users": "المستخدمون المسجلون",
+    "registered_donors": "المتبرعون المسجلون",
+    "eligible_donors": "المتبرعون المؤهلون حالياً",
+    "months_full": ["يناير", "فبراير", "مارس", "أبريل", "مايو", "يونيو", "يوليو", "أغسطس", "سبتمبر", "أكتوبر", "نوفمبر", "ديسمبر"],
+    "months_short": ["ينا", "فبر", "مارس", "أبر", "ماي", "يون", "يول", "أغس", "سبت", "أكت", "نوف", "ديس"]
+  },
+  "donation_status": {
+    "Confirmed": "مؤكد",
+    "Pending": "قيد الانتظار",
+    "Cancelled": "ملغى"
+  },
+  "bms": {
+    "brand": "BloodConnect",
+    "home_title": "إدارة الدم ببساطة",
+    "home_subtitle": "راقب المخزون حسب الفصيلة، وأهلية المتبرعين، وحافظ على جاهزية البنك — لوحة واحدة واضحة للفرق والمتبرعين.",
+    "live_overview": "نظرة حية",
+    "stock_by_type": "المخزون حسب فصيلة الدم",
+    "units": "وحدات",
+    "api_hint": "شغّل واجهة الAPI ونفّذ الترحيلات لعرض المخزون المباشر.",
+    "dashboard_badge": "لوحة التحكم",
+    "operations_center": "مركز العمليات",
+    "greeting": "مرحباً، {{name}} — مستويات المخزون، وتوافر المتبرعين، والتنبيهات في مكان واحد.",
+    "i_donated": "تبرعت",
+    "view_donors": "عرض المتبرعين",
+    "find_donors": "البحث عن متبرعين",
+    "stat_donors": "متبرعون",
+    "stat_available": "متاحون الآن",
+    "stat_donations": "تبرعات مسجلة",
+    "stat_stock": "وحدات في المخزون",
+    "stat_total_donors": "إجمالي المتبرعين",
+    "stat_available_donors": "متبرعون متاحون",
+    "stat_total_donations": "تبرعات مسجلة",
+    "stat_stock_units": "وحدات المخزون",
+    "blood_stock_title": "مخزون الدم حسب الفصيلة",
+    "low_stock_title": "تنبيهات نقص المخزون",
+    "all_groups_ok": "جميع الفصائل فوق الحد الأدنى.",
+    "low_stock_line": "{{type}} — بقيت {{count}} وحدات فقط (الحد: 10)",
+    "my_donations_badge": "تبرعاتي",
+    "declare_title": "تسجيل تبرع",
+    "declare_subtitle": "خطوة واحدة تحدّث سجلك وتضيف وحدات للفصيلة المناسبة. فترة الأهلية: 3 أشهر.",
+    "i_donated_today": "تبرعت اليوم",
+    "units_label": "الوحدات (1–5)",
+    "confirm_donation": "تأكيد التبرع",
+    "saving": "جاري الحفظ…",
+    "not_eligible": "غير مؤهل بعد (90 يوماً)",
+    "saved_next": "تم الحفظ. تاريخ الأهلية التالي: {{date}}",
+    "error_save": "تعذّر حفظ التبرع.",
+    "history": "السجل",
+    "no_donations": "لا توجد تبرعات مسجلة بعد.",
+    "unit_singular": "وحدة",
+    "units_plural": "وحدات",
+    "loading": "جاري التحميل…",
+    "donors_label": "متبرعون",
+    "available_label": "متاحون",
+    "next_eligible": "تاريخ الأهلية التالي : {{date}}"
   },
   "stories": {
     "ahmed": {
@@ -128,11 +219,13 @@
     }
   },
   "common": {
+    "back": "رجوع",
     "loading": "جار التحميل...",
     "urgent": "عاجل",
     "respond": "استجابة",
     "details": "التفاصيل",
-    "participate": "شارك"
+    "participate": "شارك",
+    "retry": "إعادة المحاولة"
   },
   "auth": {
     "login_title": "مرحباً بعودتكم",
@@ -150,6 +243,11 @@
     "phone_label": "الهاتف",
     "city_label": "المدينة",
     "blood_type_label": "فصيلة الدم",
+    "age_label": "العمر",
+    "gender_label": "الجنس",
+    "gender_male": "ذكر",
+    "gender_female": "أنثى",
+    "gender_other": "آخر",
     "login_btn": "تسجيل الدخول",
     "register_btn": "إنشاء الحساب",
     "no_account": "ليس لديك حساب؟",
@@ -188,7 +286,15 @@
     "availability_checkbox": "أنا متاح حالياً للتبرع بالدم",
     "update_success": "تم تحديث الملف الشخصي بنجاح!",
     "update_failed": "فشل التحديث. حاول مرة أخرى.",
-    "select_group": "اختر فصيلتك"
+    "select_group": "اختر فصيلتك",
+    "last_donation": "آخر تبرع",
+    "next_eligible": "التبرع القادم المتاح",
+    "eligible_badge": "مؤهل",
+    "not_eligible_badge": "غير متاح مؤقتاً",
+    "recent_donor_badge": "متبرع حديث",
+    "recipient_name": "اسم المستفيد",
+    "confirm_donation": "تأكيد التبرع",
+    "donation_history": "سجل التبرعات"
   },
   "dashboard": {
     "title": "لوحة التحكم",
@@ -220,7 +326,11 @@
     "hide_contact": "إخفاء جهة الاتصال",
     "donor": "المتبرع",
     "phone": "الهاتف",
-    "email": "البريد الإلكتروني"
+    "email": "البريد الإلكتروني",
+    "accept": "قبول",
+    "reject": "رفض",
+    "accepted": "مقبول",
+    "rejected": "مرفوض"
   },
   "my_requests": {
     "title": "طلبات الدم الخاصة بي",
@@ -263,7 +373,7 @@
         "donations": "التبرعات المكتملة"
       },
       "recent_users": "التسجيلات الحديثة",
-      "recent_requests": "أحدث الطلبات",
+      "recent_donations": "آخر التبرعات المسجلة",
       "view_all": "عرض الكل"
     }
   },
@@ -295,5 +405,34 @@
     "history": "سجل النشاط",
     "empty_history": "لا توجد أنشطة عامة حديثة.",
     "not_found": "المستخدم غير موجود"
+  },
+  "certificate": {
+    "download": "تحميل الشهادة",
+    "print": "طباعة",
+    "verified": "مستند موثق من طرف BloodConnect"
+  },
+  "chatbot": {
+    "title": "مساعد BloodConnect",
+    "subtitle": "إجابات سريعة حول التبرع بالدم",
+    "scope": "أجيب فقط عن الأسئلة المتعلقة بالتبرع بالدم، خطوات التبرع، ومراكز التبرع في وجدة.",
+    "welcome": "مرحباً! يمكنني مساعدتك في أهلية التبرع، خطوات العملية، ومراكز التبرع في وجدة. اطرح سؤالك وسأجيبك بشكل واضح ومختصر.",
+    "placeholder": "اكتب رسالتك هنا...",
+    "error": "حدث خطأ ما. يرجى المحاولة مرة أخرى.",
+    "suggestions": {
+      "where_label": "أين أتبرع؟",
+      "where_question": "أين يمكنني التبرع بالدم في وجدة؟",
+      "eligible_label": "هل أنا مؤهل؟",
+      "eligible_question": "هل أنا مؤهل للتبرع بالدم؟",
+      "process_label": "كيف تتم العملية؟",
+      "process_question": "كيف تتم عملية التبرع بالدم؟"
+    }
+  },
+  "confirmation": {
+    "confirm_blood_received": "تأكيد استلام الدم",
+    "confirm_title": "تأكيد التبرع",
+    "confirm_question": "هل تؤكد استلامك للتبرع بالدم من {{name}}؟",
+    "success": "تم تأكيد التبرع بنجاح!",
+    "view_certificate": "عرض الشهادة",
+    "certificate_id": "رقم الشهادة"
   }
 }

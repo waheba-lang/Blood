@@ -2,7 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\RegistrationConfirmationMail;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 
 class AuthController extends Controller
 {
@@ -11,23 +15,47 @@ class AuthController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|string|unique:users,email',
             'password' => 'required|string|confirmed|min:8',
-            'role' => 'required|in:donor,patient,admin',
+            'role' => 'required|in:donor,patient,admin,organizer',
             'phone' => 'nullable|string',
             'city' => 'nullable|string',
             'blood_type' => 'nullable|string|in:A+,A-,B+,B-,AB+,AB-,O+,O-',
-            'is_available' => 'boolean'
+            'is_available' => 'boolean',
+            'age' => 'nullable|integer|min:18|max:100',
+            'gender' => 'nullable|string|in:Male,Female,Other',
+            'profile_photo' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+            'avatar_type' => 'nullable|string',
         ]);
+
+        $profilePhotoPath = null;
+        if ($request->hasFile('profile_photo')) {
+            $profilePhotoPath = $request->file('profile_photo')->store('profile_photos', 'public');
+        } elseif ($request->filled('avatar_type')) {
+            $profilePhotoPath = $request->avatar_type;
+        }
 
         $user = \App\Models\User::create([
             'name' => $fields['name'],
             'email' => $fields['email'],
-            'password' => \Illuminate\Support\Facades\Hash::make($fields['password']),
+            'password' => Hash::make($fields['password']),
             'role' => $fields['role'],
             'phone' => $fields['phone'] ?? null,
             'city' => $fields['city'] ?? null,
             'blood_type' => $fields['blood_type'] ?? null,
-            'is_available' => $fields['is_available'] ?? true
+            'is_available' => $fields['is_available'] ?? true,
+            'age' => $fields['age'] ?? null,
+            'gender' => $fields['gender'] ?? null,
+            'profile_photo_path' => $profilePhotoPath,
         ]);
+
+        try {
+            Mail::to($user->email)->send(new RegistrationConfirmationMail($user));
+        } catch (\Throwable $exception) {
+            Log::warning('Registration confirmation email could not be sent.', [
+                'user_id' => $user->id,
+                'email' => $user->email,
+                'error' => $exception->getMessage(),
+            ]);
+        }
 
         $token = $user->createToken('myapptoken')->plainTextToken;
 
@@ -63,6 +91,7 @@ class AuthController extends Controller
     }
 
     public function user(Request $request) {
-        return response(['user' => $request->user()], 200);
+        $user = $request->user()->load(['donations', 'joinedCampaigns', 'createdCampaigns']);
+        return response(['user' => $user], 200);
     }
 }

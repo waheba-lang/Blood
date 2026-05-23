@@ -1,0 +1,328 @@
+/* ====================================================
+   CUSTOM RECREATED FOOTER
+   ==================================================== */
+
+:root {
+  --footer-bg: #4d120f;
+  /* Dark navy that blends well with Sky Blue and matches image */
+}
+
+.footer-custom {
+  background-color: #4d120f;
+  /* background: var(--footer-bg); */
+  color: #e2e8f0;
+  position: relative;
+  margin-top: 6rem;
+  /* Space for the wave to pop up */
+  font-family: var(--font-body);
+  padding-bottom: 1.5rem;
+}
+
+.footer-wave {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  transform: translateY(-100%);
+  line-height: 0;
+  z-index: 10;
+}
+
+.footer-wave svg {
+  display: block;
+  width: 100%;
+  height: 100px;
+  margin-bottom: -1px;
+}
+
+.footer-custom .container {
+  max-width: 1300px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+.footer-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1.5fr;
+  gap: 3rem;
+  margin-bottom: 2rem;
+  padding-top: 2rem;
+}
+
+/* ---------------- Column 1 ---------------- */
+.footer-col-1 {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.footer-logo-container {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.footer-logo-img {
+  width: 50px;
+  height: 50px;
+  background: white;
+  border-radius: 50%;
+  padding: 5px;
+  object-fit: contain;
+}
+
+.footer-brand-text h2 {
+  font-size: 1.8rem;
+  font-weight: 800;
+  color: white;
+  margin: 0;
+  letter-spacing: -0.5px;
+}
+
+.footer-brand-text h2 span {
+  color: #98abc9;
+  /* Burgundy Red */
+}
+
+.footer-brand-text p {
+  font-size: 0.75rem;
+  color: #cbd5e1;
+  margin: 0;
+  line-height: 1.4;
+}
+
+.footer-contact-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  margin-top: 0.5rem;
+}
+
+.contact-line {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 0.85rem;
+  color: #cbd5e1;
+}
+
+.contact-line svg {
+  color: white;
+}
+
+.footer-socials {
+  display: flex;
+  gap: 0.75rem;
+  margin-top: 0.5rem;
+}
+
+.footer-socials a {
+  background-color: #98abc9;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  /* background: transparent; */
+  border: 1px solid white;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  transition: var(--transition-fast);
+}
+
+.footer-socials a:hover {
+  background: #98abc9;
+  border-color: #98abc9;
+  color: white;
+  transform: translateY(-2px);
+}
+
+/* ---------------- Columns 2 & 3 (Right Aligned) ---------------- */
+.align-right {
+  text-align: right;
+}
+
+.footer-title {
+  color: white;
+  font-size: 1rem;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.footer-links {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.footer-links a {
+  color: #cbd5e1;
+  text-decoration: none;
+  font-size: 0.85rem;
+  transition: var(--transition-fast);
+  display: inline-block;
+}
+
+.footer-links a:hover {
+  /* color: var(--primary); */
+  color: #98abc9;
+  transform: translateX(-4px);
+  /* Moves left because it's right-aligned */
+}
+
+/* ---------------- Column 4 (Right Actions) ---------------- */
+.footer-buttons {
+  display: flex;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+
+.footer-btn {
+  flex: 1;
+  background: var(--primary);
+  /* Burgundy Red */
+  color: white;
+  border-radius: 8px;
+  padding: 0.6rem 0.8rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  text-decoration: none;
+  font-size: 0.7rem;
+  font-weight: 700;
+  line-height: 1.2;
+  transition: var(--transition-fast);
+  box-shadow: 0 4px 10px rgba(104, 26, 21, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.footer-btn:hover {
+  /* background: var(--primary-hover); */
+  background: #98abc9;
+  color: white;
+  transform: translateY(-2px);
+}
+
+.footer-btn span {
+  text-align: left;
+}
+
+.btn-icon {
+
+  opacity: 0.9;
+  flex-shrink: 0;
+  margin-left: 0.5rem;
+}
+
+.footer-map-card {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  padding: 1rem 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.footer-map-card span {
+  font-size: 0.8rem;
+  color: #e2e8f0;
+  line-height: 1.4;
+}
+
+.map-icon-wrapper {
+  background: white;
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+/* ---------------- Bottom Bar ---------------- */
+.footer-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 1.5rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.footer-partners {
+  display: flex;
+  gap: 2rem;
+}
+
+.partner-logo {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.75rem;
+  color: #94a3b8;
+  font-weight: 600;
+}
+
+.partner-icon {
+  color: #ef4444;
+  /* Image uses red crescent */
+  font-size: 1.2rem;
+}
+
+.footer-copyright {
+  font-size: 0.8rem;
+  color: #94a3b8;
+}
+
+/* ---------------- Responsive ---------------- */
+@media (max-width: 1024px) {
+  .footer-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+  }
+
+  .footer-col-2,
+  .footer-col-3 {
+    text-align: left;
+  }
+
+  .footer-links a:hover {
+    transform: translateX(4px);
+    /* Reset movement for left-aligned */
+  }
+
+  .footer-col-4 {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 640px) {
+  .footer-grid {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  .footer-bottom {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .footer-partners {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .footer-buttons {
+    flex-direction: column;
+  }
+}

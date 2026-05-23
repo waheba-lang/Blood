@@ -1,113 +1,268 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router-dom';
 import axios from '../utils/axios';
+import { Search, MapPin, Droplet, Phone, Users, SlidersHorizontal, CheckCircle2, User } from 'lucide-react';
+import './FindDonors.css';
 
+// The list of all valid blood types to display in the filter bar
+const BLOOD_TYPES = ['O+', 'O-', 'A+', 'A-', 'B+', 'B-', 'AB+', 'AB-'];
+
+/**
+ * FindDonors Page Component
+ * 
+ * Allows users to search the database for blood donors.
+ * Includes filters for city, blood type, name, and availability status.
+ */
 export default function FindDonors() {
   const { t, i18n } = useTranslation();
-  const { user } = useAuth();
-  const [donors, setDonors] = useState([]);
-  const [city, setCity] = useState('');
-  const [bloodType, setBloodType] = useState('');
-  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+  const { user } = useAuth(); // Check if the user is logged in
 
-  const fetchDonors = () => {
-    setLoading(true);
-    let url = '/users?role=donor';
-    if(city) url += `&city=${encodeURIComponent(city)}`;
-    if(bloodType) url += `&blood_type=${encodeURIComponent(bloodType)}`;
-    
-    axios.get(url)
-      .then(res => setDonors(res.data.filter(d => d.is_available)))
-      .catch(err => console.error(err))
-      .finally(() => setLoading(false));
-  };
-
-  useEffect(() => {
-    const timeout = setTimeout(() => {
-      fetchDonors();
-    }, 300);
-    
-    return () => clearTimeout(timeout);
-  }, [city, bloodType]);
+  // --- Search and Filter States ---
+  const [donors, setDonors] = useState([]); // List of donors fetched from the API
+  const [city, setCity] = useState(''); // The city the user is searching for
+  const [bloodType, setBloodType] = useState(''); // The selected blood group filter
+  const [name, setName] = useState(''); // The name the user is typing into the search bar
+  const [availableOnly, setAvailableOnly] = useState(true); // Toggle to show only "Available" donors
+  
+  // --- UI States ---
+  const [loading, setLoading] = useState(false); // Shows a loading spinner while fetching data
+  const [totalCount, setTotalCount] = useState(0); // Total number of donors found
 
   const isRtl = i18n.language === 'ar';
 
-  if (user?.role !== 'patient' && user?.role !== 'admin') 
-    return <div style={{ textAlign: 'center', marginTop: '4rem', fontSize: '2rem', color: 'var(--text-muted)' }}>{t('find_donors.access_denied')}</div>;
+  /**
+   * Fetches the list of donors from the backend API based on the current filters.
+   */
+  const fetchDonors = () => {
+    setLoading(true);
+    
+    // Build the query URL dynamically based on what the user has typed/selected
+    let url = '/users?role=donor';
+    if (availableOnly) url += '&is_available=1';
+    if (city) url += `&city=${encodeURIComponent(city)}`;
+    if (bloodType) url += `&blood_type=${encodeURIComponent(bloodType)}`;
+    if (name) url += `&name=${encodeURIComponent(name)}`;
+
+    // Call the API
+    axios.get(url)
+      .then(res => {
+        setDonors(res.data);
+        setTotalCount(res.data.length);
+      })
+      .catch(err => console.error("Error fetching donors:", err))
+      .finally(() => setLoading(false));
+  };
+
+  /**
+   * Effect Hook: Automatically run 'fetchDonors' whenever a filter changes.
+   * Uses a "debounce" (setTimeout) so we don't spam the server with requests 
+   * every single time the user types a single letter.
+   */
+  useEffect(() => {
+    // Wait 350ms after the user stops typing/clicking before fetching
+    const timeout = setTimeout(() => {
+      fetchDonors();
+    }, 350); 
+    
+    // Cleanup the timer if the user types again before the 350ms is up
+    return () => clearTimeout(timeout);
+  }, [city, bloodType, name, availableOnly]);
+
+  /**
+   * Safely gets the avatar URL
+   */
+  const getPhotoUrl = (donor) => {
+    return donor.avatar_url;
+  };
+
+  const renderAvatar = (donor) => {
+    const url = getPhotoUrl(donor);
+    return (
+      <div 
+        className="donor-avatar" 
+        style={{ 
+          background: url ? `url(${url}) center/cover` : 'var(--primary-light)',
+          color: 'var(--primary-dark)'
+        }}
+      >
+        {!url && getInitials(donor.name)}
+      </div>
+    );
+  };
+
+  const getInitials = (name) => {
+    return name ? name.split(' ').map(w => w[0]).join('').toUpperCase().slice(0, 2) : '?';
+  };
+
+  if (!user) {
+    return (
+      <div className="stats-dashboard--center">
+        <Droplet size={64} className="stats-spin" />
+        <h2>{t('find_donors.login_required_title')}</h2>
+        <p className="stats-muted">{t('find_donors.login_required_body')}</p>
+        <button className="btn btn-primary" style={{marginTop: '2rem'}} onClick={() => navigate('/login')}>
+          {t('find_donors.login_cta')}
+        </button>
+      </div>
+    );
+  }
 
   return (
-    <div className="container" style={{ padding: '4rem 0' }}>
-      <div className="section-header" style={{ marginBottom: '2rem', flexDirection: isRtl ? 'row-reverse' : 'row' }}>
-        <h1 className="section-title">
-          <i className="fas fa-search-plus"></i>
-          {t('find_donors.title')}
-        </h1>
-      </div>
-      
-      <div className="filter-bar glass-panel" style={{ 
-        padding: '1.5rem', 
-        marginBottom: '3rem', 
-        display: 'flex', 
-        gap: '1rem', 
-        flexWrap: 'wrap', 
-        alignItems: 'center',
-        flexDirection: isRtl ? 'row-reverse' : 'row'
-      }}>
-        <h4 style={{ margin: 0, marginLeft: isRtl ? '1rem' : '0', marginRight: isRtl ? '0' : '1rem', color: 'var(--text-muted)' }}>
-          <i className="fas fa-filter"></i> {t('filters.label')}
-        </h4>
-        <input 
-          value={city} 
-          onChange={e => setCity(e.target.value)} 
-          style={{ padding: '0.6rem 1rem', borderRadius: '8px', border: '1px solid var(--gray-200)', minWidth: '150px', flex: '1', textAlign: isRtl ? 'right' : 'left' }} 
-          placeholder={t('filters.city_placeholder')} 
-        />
-        <select 
-          value={bloodType} 
-          onChange={e => setBloodType(e.target.value)} 
-          style={{ padding: '0.6rem 1rem', borderRadius: '8px', border: '1px solid var(--gray-200)', minWidth: '150px', flex: '1' }}
-        >
-          <option value="">{t('filters.all_groups')}</option>
-          <option value="O+">O+</option>
-          <option value="O-">O-</option>
-          <option value="A+">A+</option>
-          <option value="A-">A-</option>
-          <option value="B+">B+</option>
-          <option value="B-">B-</option>
-          <option value="AB+">AB+</option>
-          <option value="AB-">AB-</option>
-        </select>
-      </div>
+    <div className="find-donors-page" dir={isRtl ? 'rtl' : 'ltr'}>
+      {/* Hero Header */}
+      <section className="find-donors-hero">
+        <div className="container">
+          <div className="stats-hero__badge" style={{ margin: '0 auto 1.5rem', background: 'var(--primary-light)', color: 'var(--primary-dark)' }}>
+            <Droplet size={18} fill="currentColor" />
+            {t('find_donors.brand_badge')}
+          </div>
+          <h1 style={{color: 'var(--text-primary)', textAlign: 'center', fontWeight: '800', fontSize: '2.5rem', marginBottom: '1rem'}}>{t('find_donors.title')}</h1>
+          <p style={{color: 'var(--text-secondary)', textAlign: 'center', maxWidth: '600px', margin: '0 auto 3rem', fontSize: '1.1rem'}}>
+            {t('find_donors.subtitle')}
+          </p>
 
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '1.5rem' }}>
-        {loading ? (
-             <div style={{ gridColumn: '1 / -1', display: 'flex', justifyContent: 'center', padding: '3rem' }}>
-               <div className="loader" style={{ border: '4px solid #f3f3f3', borderTop: '4px solid var(--primary)', borderRadius: '50%', width: '40px', height: '40px', animation: 'spin 1s linear infinite' }}></div>
-               <style>{`@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }`}</style>
-             </div>
-        ) : donors.length > 0 ? donors.map(donor => (
-          <div key={donor.id} className="request-card" style={{ padding: '2rem', display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center' }}>
-            <div className="request-blood" style={{ marginBottom: '1rem', position: 'static' }}>{donor.blood_type}</div>
-            <h3 style={{ fontSize: '1.3rem', fontWeight: 'bold' }}>{donor.name}</h3>
-            <p style={{ color: 'var(--text-muted)', display: 'flex', alignItems: 'center', gap: '0.5rem', flexDirection: isRtl ? 'row-reverse' : 'row' }}>
-              <i className="fas fa-map-marker-alt"></i> 
-              {donor.city}
-            </p>
-            <p style={{ marginTop: '0.5rem', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '0.5rem', flexDirection: isRtl ? 'row-reverse' : 'row' }}>
-              <i className="fas fa-phone"></i> 
-              {donor.phone || 'Non fourni'}
-            </p>
-            <button className="btn btn-primary" style={{ marginTop: '1.5rem', width: '100%', borderRadius: '12px' }}>{t('donor_card.contact')}</button>
+          {/* Search Bar */}
+          <div className="search-container">
+            <div className="search-input-wrapper">
+              <Search size={20} color="var(--primary)" />
+              <input
+                value={name}
+                onChange={e => setName(e.target.value)}
+                placeholder={t('filters.name_placeholder')}
+              />
+            </div>
+            <div className="search-input-wrapper">
+              <MapPin size={20} color="var(--primary)" />
+              <input
+                value={city}
+                onChange={e => setCity(e.target.value)}
+                placeholder={t('filters.city_placeholder')}
+              />
+            </div>
           </div>
-        )) : (
-          <div className="glass-panel" style={{ gridColumn: '1 / -1', padding: '4rem', textAlign: 'center' }}>
-             <i className="fas fa-users" style={{ opacity: 0.2, fontSize: '4rem' }}></i>
-             <p style={{ color: 'var(--text-muted)', fontSize: '1.2rem', marginTop: '1rem' }}>{t('find_donors.no_donors')}</p>
+        </div>
+      </section>
+
+      {/* Main Content */}
+      <div className="container" style={{ position: 'relative', zIndex: 10 }}>
+        {/* Advanced Filter Bar */}
+        <div className="filter-bar">
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', fontWeight: 800, color: 'var(--text-primary)', fontSize: '0.9rem' }}>
+            <SlidersHorizontal size={18} color="var(--primary)" />
+            {t('filters.label')}
           </div>
-        )}
+
+          <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
+            <button
+              className={`blood-type-btn ${bloodType === '' ? 'active' : ''}`}
+              onClick={() => setBloodType('')}
+            >
+              {t('filters.all_groups')}
+            </button>
+            {BLOOD_TYPES.map(bt => (
+              <button
+                key={bt}
+                className={`blood-type-btn ${bloodType === bt ? 'active' : ''}`}
+                onClick={() => setBloodType(bt === bloodType ? '' : bt)}
+              >
+                {bt}
+              </button>
+            ))}
+          </div>
+
+          <label style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', cursor: 'pointer', fontWeight: 600 }}>
+            <div className="toggle-switch" style={{ background: availableOnly ? 'var(--primary)' : '#e2e8f0' }} onClick={() => setAvailableOnly(!availableOnly)}>
+              <div className="toggle-switch-circle" style={{
+                left: isRtl ? undefined : (availableOnly ? '22px' : '4px'),
+                right: isRtl ? (availableOnly ? '22px' : '4px') : undefined
+              }} />
+            </div>
+            <span style={{color: availableOnly ? 'var(--primary)' : 'var(--text-muted)'}}>
+              {t('filters.available_only')}
+            </span>
+          </label>
+        </div>
+
+        {/* Results Info */}
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', margin: '2.5rem 0.5rem 1.5rem' }}>
+          <p style={{ fontWeight: 700, color: 'var(--text-secondary)' }}>
+            {loading ? '...' : t('find_donors.donors_found_count', { count: totalCount })}
+          </p>
+          {availableOnly && (
+            <span className="avail-badge online" style={{fontSize: '0.85rem'}}>
+              <CheckCircle2 size={16} />
+              {t('find_donors.filter_available_only')}
+            </span>
+          )}
+        </div>
+
+        {/* Grid */}
+        <div className="campaigns-grid" style={{paddingBottom: '5rem'}}>
+          {loading ? (
+            Array.from({ length: 6 }).map((_, i) => (
+              <div key={i} className="donor-card reveal" style={{minHeight: '200px', opacity: 0.5}}>
+                 <div className="stats-spin" style={{margin: 'auto'}}><Droplet /></div>
+              </div>
+            ))
+          ) : donors.length > 0 ? (
+            donors.map(donor => (
+              <div key={donor.id} className="donor-card reveal">
+                <div style={{ display: 'flex', alignItems: 'center', gap: '1.25rem', marginBottom: '1.5rem' }}>
+                  {renderAvatar(donor)}
+                  <div style={{ flex: 1, minWidth: 0 }}>
+                    <h3 style={{ margin: 0, fontSize: '1.25rem' }} className="text-truncate">{donor.name}</h3>
+                    <div className="donor-info-item" style={{ marginTop: '0.35rem' }}>
+                      <MapPin size={14} />
+                      {donor.city}
+                    </div>
+                  </div>
+                  <div className="type-badge">{donor.blood_type}</div>
+                </div>
+
+                <div style={{ marginBottom: '1.5rem' }}>
+                   <span className={`avail-badge ${donor.is_available ? 'online' : 'offline'}`}>
+                      <div style={{ width: '8px', height: '8px', borderRadius: '50%', background: 'currentColor' }} />
+                      {donor.is_available ? t('find_donors.available_badge') : t('find_donors.unavailable_badge')}
+                   </span>
+                </div>
+
+                {donor.phone && (
+                  <div className="donor-info-item" style={{ marginBottom: '1.5rem' }}>
+                    <Phone size={16} />
+                    <span>{donor.phone}</span>
+                  </div>
+                )}
+
+                <div style={{ marginTop: 'auto' }}>
+                  <a 
+                    href={donor.phone ? `tel:${donor.phone}` : '#'} 
+                    className={`btn ${donor.phone ? 'btn-primary' : 'btn-secondary'}`}
+                    style={{ width: '100%', visibility: donor.phone ? 'visible' : 'hidden' }}
+                  >
+                    <Phone size={18} />
+                    {t('find_donors.call_now')}
+                  </a>
+                </div>
+              </div>
+            ))
+          ) : (
+            <div style={{ gridColumn: '1 / -1', textAlign: 'center', padding: '5rem 2rem' }} className="glass-panel">
+               <User size={64} style={{ opacity: 0.1, marginBottom: '1.5rem' }} />
+               <h3>{t('find_donors.no_donors')}</h3>
+               <button 
+                className="btn btn-outline" 
+                style={{marginTop: '1.5rem'}}
+                onClick={() => { setCity(''); setBloodType(''); setName(''); setAvailableOnly(false); }}
+               >
+                 {t('find_donors.reset_filters')}
+               </button>
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );
 }
-

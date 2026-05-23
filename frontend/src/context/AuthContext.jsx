@@ -41,7 +41,7 @@ export const AuthProvider = ({ children }) => {
     return res.data;
   };
 
-  const logout = async () => {
+  const logout = async (shouldRedirect = true) => {
     try {
       await axios.post('/logout');
     } catch (e) {
@@ -50,6 +50,9 @@ export const AuthProvider = ({ children }) => {
     setToken(null);
     setUser(null);
     localStorage.removeItem('token');
+    if (shouldRedirect) {
+      window.location.href = '/';
+    }
   };
 
   const value = { user, token, login, register, logout, loading };

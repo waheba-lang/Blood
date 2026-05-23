@@ -2,77 +2,75 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Models\BloodStock;
 use App\Models\Donation;
+use Carbon\Carbon;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class DonationController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index(Request $request) {
-        // Return donations for the logged in user
-        return response(Donation::with('donationRequest')->where('user_id', $request->user()->id)->get());
+    public function index(Request $request)
+    {
+        $query = Donation::with('user')->latest('donation_date');
+
+        if ($request->user()->role === 'donor') {
+            $query->where('user_id', $request->user()->id);
+        }
+
+        return response()->json($query->get());
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'donation_request_id' => 'required|exists:donation_requests,id',
-            'hospital' => 'nullable|string',
-            'donation_date' => 'nullable|date',
+            'date' => 'nullable|date',
+            'quantity' => 'required|integer|min:1|max:5',
         ]);
 
-        $donationRequest = \App\Models\DonationRequest::findOrFail($validated['donation_request_id']);
+        $donor = $request->user();
+        $donationDate = $validated['date'] ?? now()->toDateString();
 
-        $donation = $request->user()->donations()->create([
-            'donation_request_id' => $validated['donation_request_id'],
-            'hospital' => $validated['hospital'] ?? null,
-            'donation_date' => $validated['donation_date'] ?? null,
-            'status' => 'Pending',
-        ]);
+        if ($donor->last_donation_at && now()->lt($donor->last_donation_at->copy()->addMonths(3))) {
+            return response()->json([
+                'message' => 'Donor is not available yet.',
+                'next_available_date' => $donor->last_donation_at->copy()->addMonths(3)->toDateString(),
+                'status' => 'not available',
+            ], 422);
+        }
 
-        // Create notification for the requester
-        \App\Models\Notification::create([
-            'user_id' => $donationRequest->user_id,
-            'type' => 'donation_response',
-            'message' => "{$request->user()->name} a proposé de faire un don pour votre demande ({$donationRequest->blood_type}).",
-            'is_read' => false,
-            'data' => [
-                'donor_id' => $request->user()->id,
-                'donor_name' => $request->user()->name,
-                'donor_email' => $request->user()->email,
-                'donor_phone' => $request->user()->phone,
-            ],
-        ]);
+        $result = DB::transaction(function () use ($donor, $donationDate, $validated) {
+            $donation = Donation::create([
+                'user_id' => $donor->id,
+                'donation_date' => $donationDate,
+                'quantity' => $validated['quantity'],
+                'status' => 'Confirmed',
+                'hospital' => null,
+            ]);
 
-        return response()->json($donation, 201);
-    }
+            $donor->update([
+                'last_donation_at' => $donationDate,
+                'is_available' => false,
+                'availability_notified_at' => null,
+            ]);
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
+            $stock = BloodStock::firstOrCreate(
+                ['blood_type' => $donor->blood_type],
+                ['quantity' => 0]
+            );
+            $stock->increment('quantity', $validated['quantity']);
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
+            return [$donation, $stock->fresh()];
+        });
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+        [$donation, $stock] = $result;
+
+        return response()->json([
+            'message' => 'Donation saved and blood stock updated.',
+            'donation' => $donation->load('user'),
+            'blood_stock' => $stock,
+            'next_available_date' => Carbon::parse($donationDate)->addMonths(3)->toDateString(),
+            'status' => 'not available',
+        ], 201);
     }
 }
