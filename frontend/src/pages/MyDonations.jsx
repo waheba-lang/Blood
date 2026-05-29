@@ -128,17 +128,17 @@ export default function MyDonations() {
         {!canDonate && (
           <div style={{ backgroundColor: 'rgba(230, 57, 70, 0.05)', border: '1px solid rgba(230, 57, 70, 0.2)', padding: '1.25rem', borderRadius: '12px', marginBottom: '1.5rem', textAlign: isRtl ? 'right' : 'left', direction: isRtl ? 'rtl' : 'ltr' }}>
             <h4 style={{ color: '#e63946', margin: '0 0 0.5rem 0', fontWeight: 800 }}>
-              Vous ne pouvez pas encore donner. Votre prochaine date d'éligibilité est le : {nextEligibleDate?.toLocaleDateString(locale)}
+              {t('my_donations.not_eligible_title')} {nextEligibleDate?.toLocaleDateString(locale)}
             </h4>
             <p style={{ margin: '0 0 0.5rem 0', fontSize: '0.9rem', color: 'var(--text-dark)' }}>
-              Le don de sang nécessite une période de récupération de 3 mois pour protéger votre santé. Donner avant ce délai augmente les risques de :
+              {t('my_donations.health_warning')}
             </p>
             <ul style={{ margin: 0, paddingLeft: isRtl ? 0 : '1.5rem', paddingRight: isRtl ? '1.5rem' : 0, fontSize: '0.85rem', color: 'var(--text-muted)' }}>
-              <li>Fatigue excessive et affaiblissement du système immunitaire</li>
-              <li>Vertiges et évanouissements (Dizziness)</li>
-              <li>Faible taux de fer et anémie (Low iron levels)</li>
-              <li>Faiblesse générale (Weakness)</li>
-              <li>Autres complications de santé sévères</li>
+              <li>{t('my_donations.risk_1')}</li>
+              <li>{t('my_donations.risk_2')}</li>
+              <li>{t('my_donations.risk_3')}</li>
+              <li>{t('my_donations.risk_4')}</li>
+              <li>{t('my_donations.risk_5')}</li>
             </ul>
           </div>
         )}

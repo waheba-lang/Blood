@@ -9,17 +9,18 @@ import { useAuth } from '../../context/AuthContext';
 const AdminRoute = () => {
   const { user } = useAuth();
 
-  // If no user is logged in, redirect them to the admin login page
+  //  ila user ma kaynash, redirecti lihom l admin login page
+  
   if (!user) {
     return <Navigate to="/admin" replace />;
   }
 
-  // If the user is logged in but is NOT an admin, redirect them to the normal dashboard (which is now home)
+  // ) ila user kayn walakin ma 3ndouch role dyal admin, redirecti lihom l home page
   if (user.role !== 'admin') {
     return <Navigate to="/" replace />;
   }
 
-  // If the checks pass, render the requested admin page (<Outlet />)
+  //  ila user kayn w 3ndouch role dyal admin, khlli lihom ychoufou l page
   return <Outlet />;
 };
 

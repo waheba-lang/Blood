@@ -10,8 +10,8 @@ import { useAuth } from '../../context/AuthContext';
 const GuestRoute = () => {
   const { user } = useAuth();
 
-  // If a user is already logged in, they shouldn't see the login/register pages.
-  // Redirect them to their respective dashboards.
+  //  ila user kayn, ma khassouch ychouf login/register pages
+  // Redirect them  redhat 3la hsab  role dyalhom
   if (user) {
     if (user.role === 'admin') {
       return <Navigate to="/admin/dashboard" replace />;
@@ -19,7 +19,7 @@ const GuestRoute = () => {
     return <Navigate to="/dashboard" replace />;
   }
 
-  // If no user is logged in, render the requested page (<Outlet />)
+  // ila user ma kaynash, khlli lihom ychoufou l page outlet dyalhom
   return <Outlet />;
 };
 

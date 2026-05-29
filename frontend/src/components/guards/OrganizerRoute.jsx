@@ -10,7 +10,7 @@ import { Loader2 } from 'lucide-react';
 const OrganizerRoute = () => {
   const { user, loading } = useAuth();
 
-  // Show a loading spinner while checking authentication status
+  //  ychouf wach user kayn wla la
   if (loading) {
     return (
       <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh', background: 'var(--bg-light)' }}>
@@ -20,12 +20,12 @@ const OrganizerRoute = () => {
     );
   }
 
-  // If no user, or user is not an organizer/admin, redirect them
+  // ila makan user wla ma 3ndouch role dyal organizer wla admin, redirecti lihom l dashboard (home) --- IGNORE ---
   if (!user || (user.role !== 'organizer' && user.role !== 'admin')) {
     return <Navigate to="/dashboard" replace />;
   }
 
-  // If the checks pass, render the requested organizer page (<Outlet />)
+  // ila user kayn w 3ndouch role dyal organizer wla admin, khlli lihom ychoufou l page outlet dyalhom
   return <Outlet />;
 };
 

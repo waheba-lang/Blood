@@ -104,7 +104,7 @@ export default function PublicProfile() {
               <div>{profile.city}</div>
             </div>
             <div className="info-box-modern">
-              <label><Calendar size={14} /> Member Since</label>
+              <label><Calendar size={14} /> {t('profile.member_since')}</label>
               <div>{new Date(profile.created_at).toLocaleDateString()}</div>
             </div>
           </div>

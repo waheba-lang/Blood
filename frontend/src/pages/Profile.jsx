@@ -137,11 +137,11 @@ export default function Profile() {
   const donationCount = user?.donations?.length || 0;
   let badgeInfo = null;
   if (donationCount >= 10) {
-    badgeInfo = { color: '#fbbf24', bg: 'rgba(251, 191, 36, 0.1)', text: 'Héros du Don (Or)', level: 'Gold' };
+    badgeInfo = { color: '#fbbf24', bg: 'rgba(251, 191, 36, 0.1)', text: t('profile.badge_gold'), level: 'Gold' };
   } else if (donationCount >= 5) {
-    badgeInfo = { color: '#94a3b8', bg: 'rgba(148, 163, 184, 0.15)', text: 'Donneur Actif (Argent)', level: 'Silver' };
+    badgeInfo = { color: '#94a3b8', bg: 'rgba(148, 163, 184, 0.15)', text: t('profile.badge_silver'), level: 'Silver' };
   } else if (donationCount >= 3) {
-    badgeInfo = { color: '#b45309', bg: 'rgba(180, 83, 9, 0.1)', text: 'Donneur Régulier (Bronze)', level: 'Bronze' };
+    badgeInfo = { color: '#b45309', bg: 'rgba(180, 83, 9, 0.1)', text: t('profile.badge_bronze'), level: 'Bronze' };
   }
 
   return (
@@ -282,7 +282,7 @@ export default function Profile() {
                {donationCount >= 3 && (
                  <button onClick={() => navigate('/certificate')} className="btn btn-primary" style={{ width: '100%', justifyContent: 'center', borderRadius: '12px', background: 'var(--primary)', color: 'white', border: 'none', padding: '0.8rem' }}>
                    <Download size={18} style={{ marginRight: '8px' }} />
-                   Télécharger mon certificat
+                   {t('profile.download_cert')}
                  </button>
                )}
             </div>
@@ -309,7 +309,7 @@ export default function Profile() {
                         <Droplet size={20} />
                       </div>
                       <div>
-                        <div style={{ fontWeight: 800 }}>{donation.hospital || 'Don de sang'}</div>
+                        <div style={{ fontWeight: 800 }}>{donation.hospital || t('profile.blood_donation')}</div>
                         <div style={{ fontSize: '0.8rem', color: 'var(--p-text-light)' }}>{new Date(donation.donation_date || donation.created_at).toLocaleDateString()}</div>
                       </div>
                     </div>
@@ -328,7 +328,7 @@ export default function Profile() {
           <section style={{ marginTop: '4rem' }}>
              <h3 className="card-title" style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" color="var(--p-accent)"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
-               Campagnes Rejointes
+               {t('profile.joined_campaigns')}
              </h3>
              <div style={{ display: 'grid', gap: '1rem' }}>
                {user.joined_campaigns?.length > 0 ? user.joined_campaigns.map(campaign => (
@@ -348,9 +348,9 @@ export default function Profile() {
                  </div>
                )) : (
                  <div className="glass-card" style={{ textAlign: 'center', padding: '3rem' }}>
-                   <p style={{ color: 'var(--p-text-light)' }}>Vous n'avez rejoint aucune campagne pour le moment.</p>
+                   <p style={{ color: 'var(--p-text-light)' }}>{t('profile.no_joined_campaigns')}</p>
                    <button onClick={() => navigate('/campaigns')} className="btn btn-primary" style={{ marginTop: '1rem' }}>
-                     Voir les campagnes
+                     {t('profile.view_campaigns')}
                    </button>
                  </div>
                )}
@@ -363,7 +363,7 @@ export default function Profile() {
         <section style={{ marginTop: '4rem' }}>
           <h3 className="card-title" style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
             <Target size={24} color="var(--primary)" />
-            Mes Demandes de Campagnes
+            {t('profile.my_campaign_requests')}
           </h3>
           <div style={{ display: 'grid', gap: '1rem' }}>
             {user.created_campaigns?.length > 0 ? user.created_campaigns.map(campaign => (
@@ -374,18 +374,18 @@ export default function Profile() {
                   </div>
                   <div>
                     <div style={{ fontWeight: 800 }}>{campaign.title}</div>
-                    <div style={{ fontSize: '0.8rem', color: 'var(--p-text-light)' }}>Créé le: {new Date(campaign.created_at).toLocaleDateString()}</div>
+                    <div style={{ fontSize: '0.8rem', color: 'var(--p-text-light)' }}>{t('profile.created_at')} {new Date(campaign.created_at).toLocaleDateString()}</div>
                   </div>
                 </div>
                 <span style={{ fontSize: '0.8rem', fontWeight: 600, color: campaign.approval_status === 'pending' ? '#fbbf24' : campaign.approval_status === 'approved' ? '#10b981' : '#ef4444', background: campaign.approval_status === 'pending' ? 'rgba(251, 191, 36, 0.1)' : campaign.approval_status === 'approved' ? 'rgba(16, 185, 129, 0.1)' : 'rgba(239, 68, 68, 0.1)', padding: '0.4rem 0.8rem', borderRadius: '8px', textTransform: 'uppercase' }}>
-                  {campaign.approval_status === 'pending' ? 'En Attente' : campaign.approval_status === 'approved' ? 'Approuvée' : 'Rejetée'}
+                  {campaign.approval_status === 'pending' ? t('profile.status_pending') : campaign.approval_status === 'approved' ? t('profile.status_approved') : t('profile.status_rejected')}
                 </span>
               </div>
             )) : (
               <div className="glass-card" style={{ textAlign: 'center', padding: '3rem' }}>
-                <p style={{ color: 'var(--p-text-light)' }}>Vous n'avez soumis aucune demande de campagne.</p>
+                <p style={{ color: 'var(--p-text-light)' }}>{t('profile.no_campaign_requests')}</p>
                 <button onClick={() => navigate('/campaigns')} className="btn btn-outline" style={{ marginTop: '1rem' }}>
-                  Organiser une campagne
+                  {t('profile.organize_campaign')}
                 </button>
               </div>
             )}

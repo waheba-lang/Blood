@@ -23,7 +23,7 @@ export default function PrintCertificate() {
   const isRtl = i18n.language === 'ar';
 
   if (loading || !mounted) {
-    return <div style={{ textAlign: 'center', padding: '10rem', fontSize: '1.2rem' }}>{t('common.loading') || 'Chargement...'}</div>;
+    return <div style={{ textAlign: 'center', padding: '10rem', fontSize: '1.2rem' }}>{t('print.loading')}</div>;
   }
 
   const donationCount = user?.donations?.length || 0;
@@ -34,13 +34,13 @@ export default function PrintCertificate() {
   }
 
   let badgeColor = '#b45309'; // Bronze
-  let badgeName = 'Donneur Régulier (Bronze)';
+  let badgeName = t('profile.badge_bronze');
   if (donationCount >= 10) {
     badgeColor = '#fbbf24'; // Gold
-    badgeName = 'Héros du Don (Or)';
+    badgeName = t('profile.badge_gold');
   } else if (donationCount >= 5) {
     badgeColor = '#94a3b8'; // Silver
-    badgeName = 'Donneur Actif (Argent)';
+    badgeName = t('profile.badge_silver');
   }
 
   const handlePrint = () => {
@@ -86,7 +86,7 @@ export default function PrintCertificate() {
              className="btn btn-text"
              style={{ padding: '0.5rem', color: '#64748b' }}
            >
-             ← {t('common.back') || 'Retour'}
+             ← {t('print.back')}
            </button>
         </div>
         <div style={{ display: 'flex', gap: '1rem' }}>
@@ -106,7 +106,7 @@ export default function PrintCertificate() {
             }}
           >
             <Printer size={20} />
-            Télécharger / Imprimer
+            {t('print.download_print')}
           </button>
         </div>
       </div>
@@ -158,11 +158,11 @@ export default function PrintCertificate() {
               </div>
               <div>
                 <h3 style={{ margin: 0, fontSize: '1.6rem', fontWeight: 900, color: '#0f172a', letterSpacing: '-0.5px' }}>BloodConnect</h3>
-                <span style={{ fontSize: '0.8rem', color: '#64748b', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '2px' }}>Réseau de Don de Sang</span>
+                <span style={{ fontSize: '0.8rem', color: '#64748b', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '2px' }}>{t('print.network')}</span>
               </div>
             </div>
             <div style={{ textAlign: 'right' }}>
-               <div style={{ fontSize: '0.75rem', color: '#94a3b8', fontWeight: 800, textTransform: 'uppercase', marginBottom: '4px' }}>Date d'émission</div>
+               <div style={{ fontSize: '0.75rem', color: '#94a3b8', fontWeight: 800, textTransform: 'uppercase', marginBottom: '4px' }}>{t('print.issue_date')}</div>
                <div style={{ fontSize: '1.1rem', fontWeight: 800, color: '#334155' }}>{currentDate}</div>
             </div>
           </div>
@@ -178,12 +178,12 @@ export default function PrintCertificate() {
               textTransform: 'uppercase',
               letterSpacing: '1px'
             }}>
-              CERTIFICAT D'HONNEUR
+              {t('print.cert_title')}
             </h1>
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '20px' }}>
               <div style={{ height: '2px', width: '80px', background: 'var(--primary)' }}></div>
               <p style={{ margin: 0, fontSize: '1.1rem', color: '#64748b', fontWeight: 600, letterSpacing: '3px', textTransform: 'uppercase' }}>
-                Décerné pour un engagement exceptionnel
+                {t('print.cert_subtitle')}
               </p>
               <div style={{ height: '2px', width: '80px', background: 'var(--primary)' }}></div>
             </div>
@@ -192,7 +192,7 @@ export default function PrintCertificate() {
           {/* Donor Name Section */}
           <div style={{ textAlign: 'center', flex: 1 }}>
             <p style={{ fontSize: '1.3rem', color: '#64748b', marginBottom: '10px' }}>
-              Ce certificat est fièrement décerné à
+              {t('print.awarded_to')}
             </p>
             <h2 style={{ 
               fontSize: '3.5rem', 
@@ -207,7 +207,7 @@ export default function PrintCertificate() {
               {user.name}
             </h2>
             <p style={{ fontSize: '1.25rem', color: '#334155', maxWidth: '700px', margin: '0 auto', lineHeight: '1.8' }}>
-              En reconnaissance de votre générosité et de votre dévouement inébranlable. Vous avez effectué <strong>{donationCount} dons de sang</strong> enregistrés, contribuant directement à sauver de nombreuses vies.
+              {t('print.recognition_1')} <strong>{donationCount} {t('print.blood_donations')}</strong> {t('print.recognition_2')}
             </p>
           </div>
 
@@ -221,7 +221,7 @@ export default function PrintCertificate() {
             alignItems: 'center'
           }}>
             <div style={{ textAlign: 'center' }}>
-              <div style={{ fontSize: '0.9rem', color: '#94a3b8', marginBottom: '8px', fontWeight: 600, textTransform: 'uppercase' }}>Niveau Atteint</div>
+              <div style={{ fontSize: '0.9rem', color: '#94a3b8', marginBottom: '8px', fontWeight: 600, textTransform: 'uppercase' }}>{t('print.level_reached')}</div>
               <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', background: `${badgeColor}15`, color: badgeColor, padding: '8px 16px', borderRadius: '30px', fontWeight: 800 }}>
                 <Award size={18} />
                 {badgeName}
@@ -243,13 +243,13 @@ export default function PrintCertificate() {
                }}>
                  <div style={{ textAlign: 'center' }}>
                     <div style={{ fontSize: '1.5rem', fontWeight: 900, color: 'var(--primary)', lineHeight: 1 }}>{donationCount}</div>
-                    <div style={{ fontSize: '0.65rem', color: 'var(--primary)', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '1px' }}>DONS</div>
+                    <div style={{ fontSize: '0.65rem', color: 'var(--primary)', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '1px' }}>{t('print.donations')}</div>
                  </div>
                </div>
             </div>
 
             <div style={{ textAlign: 'center' }}>
-              <div style={{ fontSize: '0.9rem', color: '#94a3b8', marginBottom: '15px', fontWeight: 600, textTransform: 'uppercase' }}>Directeur Général</div>
+              <div style={{ fontSize: '0.9rem', color: '#94a3b8', marginBottom: '15px', fontWeight: 600, textTransform: 'uppercase' }}>{t('print.director')}</div>
               <div style={{ 
                 fontFamily: "'Dancing Script', cursive", 
                 fontSize: '1.8rem', 

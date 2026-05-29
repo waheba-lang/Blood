@@ -20,7 +20,7 @@ class AdminSeeder extends Seeder
                 'password' => Hash::make('password123'),
                 'role' => 'admin',
                 'phone' => '1234567890',
-                'city' => 'Casablanca',
+                'city' => 'Oujda',
                 'blood_type' => 'O+',
                 'is_available' => true,
             ]

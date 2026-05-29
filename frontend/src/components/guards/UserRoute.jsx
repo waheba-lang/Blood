@@ -1,5 +1,6 @@
-import { Navigate, Outlet } from 'react-router-dom';
+import { Navigate, Outlet, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
+import { useEffect } from 'react';
 
 /**
  * UserRoute Component (Guard)
@@ -7,20 +8,28 @@ import { useAuth } from '../../context/AuthContext';
  * Protects routes that should ONLY be accessed by logged-in users.
  */
 const UserRoute = () => {
-  // Get the current logged-in user from the Auth Context
+  // Get the current logged-in user from the Auth Context jib lina user li kayn f auth context
   const { user } = useAuth();
+  const navigate = useNavigate();
 
-  // If no user is logged in, redirect them to the login page
+  useEffect(() => {
+    if (!user) {
+      alert("You must log in first to access this content.");
+      navigate('/login', { replace: true });
+    }
+  }, [user, navigate]);
+
+  // ila user ma kaynash, redirecti lihom l login page
   if (!user) {
-    return <Navigate to="/login" replace />;
+    return null;
   }
 
-  // Admins have their own dashboard, so redirect them if they try to access standard user pages
+  //  (ila user kayn w role dyalou admin, redirecti lihom l admin dashboard)
   if (user.role === 'admin') {
     return <Navigate to="/admin/dashboard" replace />;
   }
 
-  // If the checks pass, render the requested page (<Outlet />)
+  //  ila user kayn w role dyalou normal user, khlli lihom ychoufou l page outlet dyalhom
   return <Outlet />;
 };
 

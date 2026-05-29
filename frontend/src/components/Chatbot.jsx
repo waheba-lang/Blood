@@ -8,23 +8,23 @@ import './Chatbot.css';
 /**
  * Chatbot Component
  * 
- * A floating AI assistant chat window. It uses localStorage to remember chat history,
- * and calls our backend API (via axios) to get bot responses.
+ *  simple chat bot bach n3tiw l user experience mzyana, w kayn 3ndna 3 quick questions li user y9dar yclicki 3lihom bach ybda bihom l conversation kankhzn f localStorage history dyal l chat w kanb9aw nupdateiwha m3a kol message jdida, w kanb9aw nscrolliw l bottom dyal l chat m3a kol message jdida wla m3a typing indicator, w f l end kanb9aw nsendiw message dyal user l backend API w njawb 3la response dyal bot bach nshowiwha f l UI b axios
+ * kan3yto l backend API f endpoint /chatbot w kanb3to lih message dyal user w language li kayn f i18n bach l bot yjawb b nafs language, w ila kan chi error f l API call kanshowiw message d error 3la l UI
  */
 const Chatbot = () => {
   const { t, i18n } = useTranslation();
   const { user } = useAuth();
   
   // State variables to control the UI
-  const [isOpen, setIsOpen] = useState(false); // Controls if the chat window is visible
-  const [messages, setMessages] = useState([]); // Stores the list of chat messages
-  const [input, setInput] = useState(''); // Stores the user's current typed message
-  const [isTyping, setIsTyping] = useState(false); // Shows a loading animation when the bot is 'thinking'
+  const [isOpen, setIsOpen] = useState(false); //  wach l chat window m7loula wla msdoda
+  const [messages, setMessages] = useState([]); // li kayn f l chat, kol message 3ndou id, text, w sender (user wla bot)
+  const [input, setInput] = useState(''); // e chno kayktb f input box
+  const [isTyping, setIsTyping] = useState(false); // thinking' ybyn l user bl bot kayktb wla kayfkr f chi 7aja bchi animation dyal typing indicator
   
-  // A reference to the bottom of the message list so we can auto-scroll
+  //  nhbt l bottom m3a kol message jdida wla m3a typing indicator
   const messagesEndRef = useRef(null);
 
-  // Generate a unique storage key for localStorage based on the user's ID
+  // Generate a unique storage key for localStorage based on the user's ID ndir lihom chat history mzyana w ma ykhdmch 3la chi user akhor ila kan chi user kayn, w ila ma kaynash ndir lihom chat history global (guest)
   const storageKey = useMemo(() => `bloodconnect-chat-history-${user?.id ?? 'guest'}`, [user?.id]);
 
   // Helper function to create a standardized welcome message
@@ -33,8 +33,8 @@ const Chatbot = () => {
     text: t('chatbot.welcome'),
     sender: 'bot',
   });
-
-  // Effect 1: Load chat history from localStorage when the component mounts
+ 
+  // mounts njib l chat history mn localStorage w n7toha f state dyal messages, w ila ma kaynash history ndir lihom message d welcome
   useEffect(() => {
     try {
       const storedMessages = localStorage.getItem(storageKey);
@@ -49,7 +49,7 @@ const Chatbot = () => {
     }
   }, [storageKey, i18n.language]);
 
-  // Effect 2: Save chat history to localStorage every time the 'messages' array changes
+  // Effect 2: Save chat history to localStorage every time the 'messages' array changes nb9aw nupdateiw localStorage m3a kol message jdida bach user y9dar yla3b b chat history dyalou w ychouf l messages li 3ndou f chi session akhra, w n7to f localStorage f format JSON string
   useEffect(() => {
     if (messages.length > 0) {
       localStorage.setItem(storageKey, JSON.stringify(messages));

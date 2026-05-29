@@ -78,14 +78,14 @@ const Campaigns = () => {
     setSuccessMsg('');
     try {
       await axios.post(`/campaigns/${id}/join`);
-      setSuccessMsg('Vous avez rejoint la campagne avec succès !');
+      setSuccessMsg(t('campaigns.join_success'));
       fetchCampaigns(); // Refresh the list to update the participant count
     } catch (err) {
       // 422 usually means a validation error from the backend (e.g. they already joined, or health rules blocked them)
       if (err.response?.status === 422) {
         setErrorMsg(err.response.data.message + " Prochaine date : " + err.response.data.next_available_date);
       } else {
-        setErrorMsg('Erreur lors de la tentative de rejoindre la campagne.');
+        setErrorMsg(t('campaigns.join_error'));
       }
     }
   };
@@ -100,11 +100,11 @@ const Campaigns = () => {
     setSuccessMsg('');
     try {
       await axios.post('/campaigns', formData);
-      setSuccessMsg('Votre demande a été soumise avec succès et est en attente de validation par l\'administration.');
+      setSuccessMsg(t('campaigns.request_success'));
       setShowForm(false);
       setFormData({ title: '', date: '', time: '', location: '', city: '', start_time: '', end_time: '', contact_info: '', description: '', target: 50, blood_types: [] });
     } catch (err) {
-      setErrorMsg('Erreur lors de la soumission de la demande.');
+      setErrorMsg(t('campaigns.request_error'));
     }
   };
 
@@ -146,7 +146,7 @@ const Campaigns = () => {
             }}
           >
             <Plus size={20} />
-            Organiser une campagne
+            {t('campaigns.organize_btn')}
           </button>
         </div>
       </header>
@@ -167,10 +167,10 @@ const Campaigns = () => {
         {user && !canDonate && (
           <div style={{ backgroundColor: 'rgba(230, 57, 70, 0.05)', border: '1px solid rgba(230, 57, 70, 0.2)', padding: '1.25rem', borderRadius: '12px', marginBottom: '2rem' }}>
             <h4 style={{ color: '#e63946', margin: '0 0 0.5rem 0', fontWeight: 800 }}>
-              Vous ne pouvez pas participer. Votre prochaine date d'éligibilité est le : {nextEligibleDate?.toLocaleDateString(locale)}
+              {t('campaigns.not_eligible_title')} {nextEligibleDate?.toLocaleDateString(locale)}
             </h4>
             <p style={{ margin: 0, fontSize: '0.9rem', color: 'var(--text-dark)' }}>
-              Vous êtes actuellement dans votre période de récupération de 3 mois. Pour des raisons de santé, les inscriptions aux campagnes sont bloquées jusqu'à ce délai.
+              {t('campaigns.not_eligible_desc')}
             </p>
           </div>
         )}
@@ -183,12 +183,12 @@ const Campaigns = () => {
             return (
               <div key={campaign.id} className="campaign-card" style={{ display: 'flex', flexDirection: 'column' }}>
                 <span className={`urgent-badge`} style={{ background: isCompleted ? '#4CAF50' : 'var(--primary)' }}>
-                  {campaign.status === 'completed' ? 'Terminée' : campaign.status === 'ongoing' ? 'En cours' : 'À venir'}
+                  {campaign.status === 'completed' ? t('campaigns.status_completed') : campaign.status === 'ongoing' ? t('campaigns.status_ongoing') : t('campaigns.status_upcoming')}
                 </span>
                 
                 <h3>{campaign.title}</h3>
                 <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)', marginBottom: '1rem' }}>
-                  Organisé par : <strong>{campaign.organizer_name || 'BloodConnect'}</strong>
+                  {t('campaigns.organized_by')} <strong>{campaign.organizer_name || 'BloodConnect'}</strong>
                 </p>
                 
                 <div className="campaign-meta">
@@ -224,11 +224,11 @@ const Campaigns = () => {
                   <div className="progress-header">
                     <span>
                       <Users size={14} style={{ marginRight: '6px', verticalAlign: 'middle' }} />
-                      {campaign.participants_count || 0} inscrits
+                      {campaign.participants_count || 0} {t('campaigns.registered')}
                     </span>
                     <span>
                       <Target size={14} style={{ marginRight: '6px', verticalAlign: 'middle' }} />
-                      Objectif: {campaign.target}
+                      {t('campaigns.target')} {campaign.target}
                     </span>
                   </div>
                   <div className="progress-bar-bg">
@@ -241,7 +241,7 @@ const Campaigns = () => {
                 
                 {!user ? (
                   <Link to="/login" className="btn btn-outline" style={{ marginTop: '1.5rem', textAlign: 'center' }}>
-                    Connectez-vous pour participer
+                    {t('campaigns.login_to_join')}
                   </Link>
                 ) : (
                   <button 
@@ -250,7 +250,7 @@ const Campaigns = () => {
                     onClick={() => handleJoin(campaign.id)}
                     disabled={!canDonate || isCompleted || user.role !== 'donor'}
                   >
-                    {isCompleted ? 'Campagne Terminée' : (!canDonate ? 'Non éligible' : 'Rejoindre la campagne')}
+                    {isCompleted ? t('campaigns.btn_completed') : (!canDonate ? t('campaigns.btn_not_eligible') : t('campaigns.btn_join'))}
                   </button>
                 )}
               </div>
@@ -263,40 +263,40 @@ const Campaigns = () => {
         <div className="modal-overlay" style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, background: 'rgba(0,0,0,0.5)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000 }}>
           <div className="modal-content" style={{ background: 'white', padding: '2rem', borderRadius: '16px', width: '90%', maxWidth: '600px', maxHeight: '90vh', overflowY: 'auto' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
-              <h2 style={{ margin: 0 }}>Demande d'organisation de campagne</h2>
+              <h2 style={{ margin: 0 }}>{t('campaigns.form_title')}</h2>
               <button onClick={() => setShowForm(false)} style={{ background: 'none', border: 'none', cursor: 'pointer' }}><X size={24} /></button>
             </div>
             <form onSubmit={handleCreateRequest} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
               <div>
-                <label>Titre de la campagne</label>
+                <label>{t('campaigns.label_title')}</label>
                 <input type="text" className="form-control" required value={formData.title} onChange={e => setFormData({...formData, title: e.target.value})} />
               </div>
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
                 <div>
-                  <label>Ville</label>
+                  <label>{t('campaigns.label_city')}</label>
                   <input type="text" className="form-control" required value={formData.city} onChange={e => setFormData({...formData, city: e.target.value})} />
                 </div>
                 <div>
-                  <label>Date</label>
+                  <label>{t('campaigns.label_date')}</label>
                   <input type="date" className="form-control" required value={formData.date} onChange={e => setFormData({...formData, date: e.target.value})} />
                 </div>
               </div>
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
                 <div>
-                  <label>Heure de début</label>
+                  <label>{t('campaigns.label_start_time')}</label>
                   <input type="time" className="form-control" required value={formData.start_time} onChange={e => setFormData({...formData, start_time: e.target.value})} />
                 </div>
                 <div>
-                  <label>Heure de fin</label>
+                  <label>{t('campaigns.label_end_time')}</label>
                   <input type="time" className="form-control" required value={formData.end_time} onChange={e => setFormData({...formData, end_time: e.target.value})} />
                 </div>
               </div>
               <div>
-                <label>Adresse exacte / Hôpital</label>
+                <label>{t('campaigns.label_location')}</label>
                 <input type="text" className="form-control" required value={formData.location} onChange={e => setFormData({...formData, location: e.target.value})} />
               </div>
               <div>
-                <label>Groupes Sanguins Recherchés</label>
+                <label>{t('campaigns.label_blood_types')}</label>
                 <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap', marginTop: '0.5rem' }}>
                   {['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'].map(type => (
                     <button
@@ -318,20 +318,20 @@ const Campaigns = () => {
                 </div>
               </div>
               <div>
-                <label>Description</label>
+                <label>{t('campaigns.label_description')}</label>
                 <textarea className="form-control" required rows="3" value={formData.description} onChange={e => setFormData({...formData, description: e.target.value})}></textarea>
               </div>
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
                 <div>
-                  <label>Contact (Téléphone)</label>
+                  <label>{t('campaigns.label_contact')}</label>
                   <input type="text" className="form-control" value={formData.contact_info} onChange={e => setFormData({...formData, contact_info: e.target.value})} />
                 </div>
                 <div>
-                  <label>Objectif (Nombre de dons)</label>
+                  <label>{t('campaigns.label_target')}</label>
                   <input type="number" className="form-control" required min="1" value={formData.target} onChange={e => setFormData({...formData, target: e.target.value})} />
                 </div>
               </div>
-              <button type="submit" className="btn btn-primary" style={{ marginTop: '1rem', width: '100%' }}>Soumettre la demande</button>
+              <button type="submit" className="btn btn-primary" style={{ marginTop: '1rem', width: '100%' }}>{t('campaigns.submit')}</button>
             </form>
           </div>
         </div>

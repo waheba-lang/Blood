@@ -11,24 +11,24 @@ export default function About() {
   const textAlign = isRtl ? 'right' : 'left';
 
   const features = [
-    { icon: Search, title: "Recherche Rapide", desc: "Trouvez des donneurs compatibles près de chez vous en quelques clics." },
-    { icon: CalendarCheck, title: "Gestion des Campagnes", desc: "Organisez et participez à des campagnes de don de sang locales." },
-    { icon: Activity, title: "Suivi en Temps Réel", desc: "Suivez vos dons et accédez à votre historique complet." },
-    { icon: Shield, title: "Données Sécurisées", desc: "Vos informations médicales et personnelles sont strictement confidentielles." }
+    { icon: Search, title: t('about.feature1_title'), desc: t('about.feature1_desc') },
+    { icon: CalendarCheck, title: t('about.feature2_title'), desc: t('about.feature2_desc') },
+    { icon: Activity, title: t('about.feature3_title'), desc: t('about.feature3_desc') },
+    { icon: Shield, title: t('about.feature4_title'), desc: t('about.feature4_desc') }
   ];
 
   const steps = [
-    { number: '01', title: "Inscription", desc: "Créez votre profil en tant que donneur ou receveur." },
-    { number: '02', title: "Recherche ou Demande", desc: "Trouvez un donneur ou publiez une demande urgente." },
-    { number: '03', title: "Connexion", desc: "Entrez en contact de manière sécurisée." },
-    { number: '04', title: "Sauvez une vie", desc: "Faites votre don et contribuez à sauver des vies." }
+    { number: '01', title: t('about.step1_title'), desc: t('about.step1_desc') },
+    { number: '02', title: t('about.step2_title'), desc: t('about.step2_desc') },
+    { number: '03', title: t('about.step3_title'), desc: t('about.step3_desc') },
+    { number: '04', title: t('about.step4_title'), desc: t('about.step4_desc') }
   ];
 
   const stats = [
-    { label: "Donneurs Actifs", value: "5,000+" },
-    { label: "Vies Sauvées", value: "12,000+" },
-    { label: "Campagnes", value: "150+" },
-    { label: "Villes", value: "25+" }
+    { label: t('about.stat1_label'), value: "5,000+" },
+    { label: t('about.stat2_label'), value: "12,000+" },
+    { label: t('about.stat3_label'), value: "150+" },
+    { label: t('about.stat4_label'), value: "25+" }
   ];
 
   return (
@@ -39,12 +39,11 @@ export default function About() {
           <div>
             <div className="bms-hero-badge" style={{ margin: '0 auto 1.5rem' }}>
               <Heart size={16} color="var(--primary)" />
-              Notre Mission
+              {t('about.mission_badge')}
             </div>
-            <h1 style={{ fontSize: '3rem', margin: '0 0 1rem' }}>Connecter les Donneurs, Sauver des Vies.</h1>
+            <h1 style={{ fontSize: '3rem', margin: '0 0 1rem' }}>{t('about.mission_title')}</h1>
             <p style={{ maxWidth: '700px', margin: '0 auto', fontSize: '1.2rem', color: 'var(--text-muted)' }}>
-              BloodConnect est une plateforme numérique innovante conçue pour faciliter le don de sang. 
-              Notre objectif est de réduire le temps de recherche de donneurs en cas d'urgence et de bâtir une communauté solidaire.
+              {t('about.mission_desc')}
             </p>
           </div>
         </div>
@@ -53,8 +52,8 @@ export default function About() {
       {/* Main Features */}
       <section style={{ marginBottom: '4rem' }} className="reveal">
         <div style={{ textAlign: 'center', marginBottom: '2.5rem' }}>
-          <h2 style={{ fontSize: '2rem', color: 'var(--text-primary)', marginBottom: '1rem' }}>Fonctionnalités Principales</h2>
-          <p className="stats-muted">Tout ce dont vous avez besoin pour faciliter le don de sang.</p>
+          <h2 style={{ fontSize: '2rem', color: 'var(--text-primary)', marginBottom: '1rem' }}>{t('about.features_title')}</h2>
+          <p className="stats-muted">{t('about.features_subtitle')}</p>
         </div>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '2rem' }}>
           {features.map((f, i) => {
@@ -76,8 +75,8 @@ export default function About() {
       <section style={{ marginBottom: '4rem' }} className="reveal">
         <div className="glass-panel" style={{ padding: '3rem' }}>
           <div style={{ textAlign: 'center', marginBottom: '3rem' }}>
-            <h2 style={{ fontSize: '2rem', color: 'var(--text-primary)', marginBottom: '1rem' }}>Comment ça marche ?</h2>
-            <p className="stats-muted">Un processus simple, rapide et sécurisé.</p>
+            <h2 style={{ fontSize: '2rem', color: 'var(--text-primary)', marginBottom: '1rem' }}>{t('about.how_it_works_title')}</h2>
+            <p className="stats-muted">{t('about.how_it_works_subtitle')}</p>
           </div>
           
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '2rem', position: 'relative' }}>
@@ -109,8 +108,8 @@ export default function About() {
       {/* Contact & Support */}
       <section className="reveal" style={{ marginBottom: '2rem' }}>
         <div style={{ textAlign: 'center', marginBottom: '2.5rem' }}>
-          <h2 style={{ fontSize: '2rem', color: 'var(--text-primary)', marginBottom: '1rem' }}>Contact & Support</h2>
-          <p className="stats-muted">Besoin d'aide ? Notre équipe est là pour vous.</p>
+          <h2 style={{ fontSize: '2rem', color: 'var(--text-primary)', marginBottom: '1rem' }}>{t('about.contact_title')}</h2>
+          <p className="stats-muted">{t('about.contact_subtitle')}</p>
         </div>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '2rem' }}>
           <div className="glass-panel" style={{ padding: '2rem', display: 'flex', alignItems: 'center', gap: '1.5rem' }}>
@@ -118,7 +117,7 @@ export default function About() {
               <Mail size={24} />
             </div>
             <div>
-              <h4 style={{ margin: '0 0 0.25rem', fontSize: '1.1rem', fontWeight: 800 }}>Email</h4>
+              <h4 style={{ margin: '0 0 0.25rem', fontSize: '1.1rem', fontWeight: 800 }}>{t('about.contact_email')}</h4>
               <a href="mailto:support@bloodconnect.com" style={{ color: 'var(--text-muted)', textDecoration: 'none' }}>support@bloodconnect.com</a>
             </div>
           </div>
@@ -128,7 +127,7 @@ export default function About() {
               <Phone size={24} />
             </div>
             <div>
-              <h4 style={{ margin: '0 0 0.25rem', fontSize: '1.1rem', fontWeight: 800 }}>Téléphone</h4>
+              <h4 style={{ margin: '0 0 0.25rem', fontSize: '1.1rem', fontWeight: 800 }}>{t('about.contact_phone')}</h4>
               <a href="tel:+212500000000" style={{ color: 'var(--text-muted)', textDecoration: 'none' }}>+212 5 00 00 00 00</a>
             </div>
           </div>
@@ -138,8 +137,8 @@ export default function About() {
               <MessageCircle size={24} />
             </div>
             <div>
-              <h4 style={{ margin: '0 0 0.25rem', fontSize: '1.1rem', fontWeight: 800 }}>Assistant Virtuel</h4>
-              <p style={{ margin: 0, color: 'var(--text-muted)' }}>Utilisez notre Chatbot en bas à droite pour une aide instantanée.</p>
+              <h4 style={{ margin: '0 0 0.25rem', fontSize: '1.1rem', fontWeight: 800 }}>{t('about.contact_bot')}</h4>
+              <p style={{ margin: 0, color: 'var(--text-muted)' }}>{t('about.contact_bot_desc')}</p>
             </div>
           </div>
         </div>

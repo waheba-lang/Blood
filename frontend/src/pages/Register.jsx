@@ -161,7 +161,7 @@ export default function Register() {
             <select name="role" className="auth-input" value={formData.role} onChange={handleChange} style={{ textAlign: isRtl ? 'right' : 'left' }}>
               <option value="donor">{t('auth.role_donor')}</option>
               <option value="patient">{t('auth.role_patient')}</option>
-              <option value="organizer">Organisateur de campagnes</option>
+              <option value="organizer">{t('auth.role_organizer')}</option>
             </select>
           </div>
 

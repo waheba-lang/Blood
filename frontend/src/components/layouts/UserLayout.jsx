@@ -1,4 +1,4 @@
-import { Outlet } from 'react-router-dom';
+import { Outlet, useLocation } from 'react-router-dom';
 import Navbar from '../Navbar';
 import Footer from '../Footer';
 import Chatbot from '../Chatbot';
@@ -11,6 +11,9 @@ import Chatbot from '../Chatbot';
  * the Footer, and the floating Chatbot.
  */
 const UserLayout = () => {
+  const location = useLocation();
+  const isHomePage = location.pathname === '/';
+
   return (
     <div className="app-layout">
       <div className="main-container">
@@ -19,7 +22,7 @@ const UserLayout = () => {
         
         {/* <Outlet /> is a placeholder from React Router. 
             It renders whatever page component matches the current URL. */}
-        <main className="main-content">
+        <main className={isHomePage ? 'main-content-home' : 'main-content'}>
           <Outlet />
         </main>
         

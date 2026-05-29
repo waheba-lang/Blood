@@ -1,3 +1,4 @@
+import React from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { 
@@ -47,14 +48,14 @@ export default function Footer() {
               <img src="/bloodconnect-logo.png" alt="BloodConnect Logo" className="footer-logo-img" />
               <div className="footer-brand-text">
                 <h2>Blood<span>Connect</span></h2>
-                <p>Plateforme de don de sang au Maroc<br/>Service national de transfusion sanguine</p>
+                <p>{t('footer.platform_desc')}<br/>{t('footer.national_service')}</p>
               </div>
             </div>
 
             <div className="footer-contact-info">
               <div className="contact-line">
                 <MapPin size={16} />
-                <span>Siège social : Avenue Mohammed V, Rabat</span>
+                <span>{t('footer.hq_address')}</span>
               </div>
               <div className="contact-line">
                 <Phone size={16} />
@@ -76,43 +77,43 @@ export default function Footer() {
 
           {/* Column 2: CONTACT */}
           <div className="footer-col-2 align-right">
-            <h4 className="footer-title">CONTACT</h4>
+            <h4 className="footer-title">{t('footer.contact_title')}</h4>
             <ul className="footer-links">
-              <li><Link to="/faq">F.A.Q.</Link></li>
-              <li><Link to="/mentions">Mentions Légales</Link></li>
-              <li><Link to="/contact">Contact</Link></li>
-              <li><Link to="/privacy">Vie Privée</Link></li>
+              <li><Link to="/faq">{t('footer.faq')}</Link></li>
+              <li><Link to="/mentions">{t('footer.legal')}</Link></li>
+              <li><Link to="/contact">{t('footer.contact')}</Link></li>
+              <li><Link to="/privacy">{t('footer.privacy')}</Link></li>
             </ul>
           </div>
 
           {/* Column 3: INFORMATIONS */}
           <div className="footer-col-3 align-right">
-            <h4 className="footer-title">INFORMATIONS</h4>
+            <h4 className="footer-title">{t('footer.info_title')}</h4>
             <ul className="footer-links">
-              <li><Link to="/register">Inscrivez-vous</Link></li>
-              <li><Link to="/find-donors">Centres</Link></li>
-              <li><Link to="/eligibility">Éligibilité</Link></li>
-              <li><Link to="/hospitals">Hôpitaux</Link></li>
-              <li><Link to="/about">À propos</Link></li>
-              <li><Link to="/news">Actualités</Link></li>
+              <li><Link to="/register">{t('footer.register')}</Link></li>
+              <li><Link to="/find-donors">{t('footer.centers')}</Link></li>
+              <li><Link to="/eligibility">{t('footer.eligibility')}</Link></li>
+              <li><Link to="/hospitals">{t('footer.hospitals')}</Link></li>
+              <li><Link to="/about">{t('footer.about')}</Link></li>
+              <li><Link to="/news">{t('footer.news')}</Link></li>
             </ul>
           </div>
 
           {/* Column 4: LIENS RAPIDES */}
           <div className="footer-col-4">
-            <h4 className="footer-title">LIENS RAPIDES</h4>
+            <h4 className="footer-title">{t('footer.quick_links')}</h4>
             
             <div className="footer-buttons">
               <Link to="/donate" className="footer-btn btn-red">
-                <span>DONNER<br/>MAINTENANT</span> <Droplet size={16} className="btn-icon"/>
+                <span>{t('footer.donate_now').split('\\n').map((line, i) => <React.Fragment key={i}>{line}{i === 0 && <br/>}</React.Fragment>)}</span> <Droplet size={16} className="btn-icon"/>
               </Link>
               <Link to="/organization" className="footer-btn btn-red">
-                <span>S'INSCRIRE COMME<br/>ORGANISATION</span> <Users size={16} className="btn-icon"/>
+                <span>{t('footer.register_org').split('\\n').map((line, i) => <React.Fragment key={i}>{line}{i === 0 && <br/>}</React.Fragment>)}</span> <Users size={16} className="btn-icon"/>
               </Link>
             </div>
 
             <div className="footer-map-card">
-              <span>Trouver le centre de don le plus proche au Maroc</span>
+              <span>{t('footer.find_center')}</span>
               <div className="map-icon-wrapper">
                 <MapPin size={24} color="var(--primary)" />
               </div>
@@ -125,14 +126,14 @@ export default function Footer() {
         <div className="footer-bottom">
           <div className="footer-partners">
             <div className="partner-logo">
-              <span className="partner-icon">🌙</span> Croissant-Rouge Marocain
+              <span className="partner-icon">🌙</span> {t('footer.red_crescent')}
             </div>
             <div className="partner-logo">
-              <span className="partner-icon">⚕️</span> Ministère de la Santé du Maroc
+              <span className="partner-icon">⚕️</span> {t('footer.health_ministry')}
             </div>
           </div>
           <div className="footer-copyright">
-            © 2026 BloodConnect pour le Bien. Tous droits réservés.
+            {t('footer.copyright')}
           </div>
         </div>
       </div>

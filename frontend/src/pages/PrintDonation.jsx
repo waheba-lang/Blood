@@ -35,7 +35,7 @@ export default function PrintDonation() {
     fetchDonation();
   }, [id]);
 
-  if (loading) return <div style={{ textAlign: 'center', padding: '10rem', fontSize: '1.2rem' }}>{t('common.loading')}</div>;
+  if (loading) return <div style={{ textAlign: 'center', padding: '10rem', fontSize: '1.2rem' }}>{t('print.loading')}</div>;
   if (!donation) return <div style={{ textAlign: 'center', padding: '10rem', fontSize: '1.2rem' }}>{t('request_detail.not_found')}</div>;
 
   const handlePrint = () => {
@@ -77,7 +77,7 @@ export default function PrintDonation() {
              className="btn btn-text"
              style={{ padding: '0.5rem', color: '#64748b' }}
            >
-             ← {t('common.back') || 'Retour'}
+             ← {t('print.back')}
            </button>
         </div>
         <div style={{ display: 'flex', gap: '1rem' }}>
@@ -96,7 +96,7 @@ export default function PrintDonation() {
             }}
           >
             <Printer size={20} />
-            {t('certificate.download') || 'Télécharger / Imprimer'}
+            {t('print.download_print')}
           </button>
         </div>
       </div>
@@ -148,11 +148,11 @@ export default function PrintDonation() {
               </div>
               <div>
                 <h3 style={{ margin: 0, fontSize: '1.4rem', fontWeight: 900, color: '#0f172a', letterSpacing: '-0.5px' }}>BloodConnect</h3>
-                <span style={{ fontSize: '0.75rem', color: '#64748b', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '1px' }}>Network Maroc</span>
+                <span style={{ fontSize: '0.75rem', color: '#64748b', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '1px' }}>{t('print.network_maroc')}</span>
               </div>
             </div>
             <div style={{ textAlign: 'right' }}>
-               <div style={{ fontSize: '0.7rem', color: '#94a3b8', fontWeight: 700, textTransform: 'uppercase', marginBottom: '4px' }}>Certificat de Don</div>
+               <div style={{ fontSize: '0.7rem', color: '#94a3b8', fontWeight: 700, textTransform: 'uppercase', marginBottom: '4px' }}>{t('print.donation_cert')}</div>
                <div style={{ fontSize: '1rem', fontWeight: 700, color: '#334155' }}>#{donation.certificate_id || `BC-${donation.id}`}</div>
             </div>
           </div>
@@ -166,12 +166,12 @@ export default function PrintDonation() {
               margin: '0 0 10px',
               fontFamily: "'Playfair Display', serif" 
             }}>
-              {isRtl ? 'شهادة تقدير' : 'CERTIFICAT DE RECONNAISSANCE'}
+              {t('print.cert_recognition')}
             </h1>
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '15px' }}>
               <div style={{ height: '1px', width: '60px', background: '#e2e8f0' }}></div>
               <p style={{ margin: 0, fontSize: '1rem', color: '#64748b', fontWeight: 500, letterSpacing: '2px', textTransform: 'uppercase' }}>
-                {isRtl ? 'تقديراً لمساهمتكم النبيلة' : 'In recognition of a noble contribution'}
+                {t('print.noble_contribution')}
               </p>
               <div style={{ height: '1px', width: '60px', background: '#e2e8f0' }}></div>
             </div>
@@ -180,7 +180,7 @@ export default function PrintDonation() {
           {/* Donor Name Section */}
           <div style={{ textAlign: 'center', flex: 1 }}>
             <p style={{ fontSize: '1.2rem', color: '#64748b', marginBottom: '15px' }}>
-              {isRtl ? 'نشهد بكل فخر أن المتبرع الكريم' : 'Nous certifions avec fierté que le donneur'}
+              {t('print.we_certify')}
             </p>
             <h2 style={{ 
               fontSize: '3.2rem', 
@@ -195,9 +195,7 @@ export default function PrintDonation() {
               {donation.user.name}
             </h2>
             <p style={{ fontSize: '1.15rem', color: '#475569', maxWidth: '650px', margin: '0 auto', lineHeight: '1.7' }}>
-              {isRtl 
-                ? `قد ساهم بنجاح في إنقاذ الأرواح من خلال عمله الإنساني النبيل بالتبرع بالدم (الفصيلة: ${donation.user.blood_type}) في تاريخ ${donationDate}.` 
-                : `a contribué avec succès à sauver des vies grâce à son acte humanitaire noble de don de sang (Groupe: ${donation.user.blood_type}) le ${donationDate}.`}
+              {t('print.contributed_1')} {donation.user.blood_type}{t('print.contributed_2')} {donationDate}.
             </p>
           </div>
 
@@ -211,8 +209,8 @@ export default function PrintDonation() {
             alignItems: 'end'
           }}>
             <div style={{ textAlign: 'center' }}>
-              <div style={{ fontSize: '0.9rem', color: '#94a3b8', marginBottom: '8px', fontWeight: 600 }}>Établissement</div>
-              <div style={{ fontSize: '1.1rem', fontWeight: 800, color: '#334155' }}>{donation.hospital || 'Centre de Transfusion'}</div>
+              <div style={{ fontSize: '0.9rem', color: '#94a3b8', marginBottom: '8px', fontWeight: 600 }}>{t('print.establishment')}</div>
+              <div style={{ fontSize: '1.1rem', fontWeight: 800, color: '#334155' }}>{donation.hospital || t('print.transfusion_center')}</div>
             </div>
 
             <div style={{ textAlign: 'center', position: 'relative' }}>
@@ -238,14 +236,14 @@ export default function PrintDonation() {
                     justifyContent: 'center'
                  }}>
                     <span style={{ fontSize: '1.2rem', fontWeight: 900, color: '#0891b2' }}>{donation.user.blood_type}</span>
-                    <span style={{ fontSize: '0.6rem', color: '#0891b2', fontWeight: 800, textTransform: 'uppercase' }}>RH Type</span>
+                    <span style={{ fontSize: '0.6rem', color: '#0891b2', fontWeight: 800, textTransform: 'uppercase' }}>{t('print.rh_type')}</span>
                  </div>
                </div>
-               <div style={{ fontSize: '0.75rem', fontWeight: 600, color: '#64748b' }}>VÉRIFIÉ & CERTIFIÉ</div>
+               <div style={{ fontSize: '0.75rem', fontWeight: 600, color: '#64748b' }}>{t('print.verified')}</div>
             </div>
 
             <div style={{ textAlign: 'center' }}>
-              <div style={{ fontSize: '0.9rem', color: '#94a3b8', marginBottom: '15px', fontWeight: 600 }}>Signature Administrative</div>
+              <div style={{ fontSize: '0.9rem', color: '#94a3b8', marginBottom: '15px', fontWeight: 600 }}>{t('print.admin_signature')}</div>
               <div style={{ 
                 fontFamily: "'Dancing Script', cursive", 
                 fontSize: '1.6rem', 
@@ -260,7 +258,7 @@ export default function PrintDonation() {
           
           <div style={{ textAlign: 'center', marginTop: '30px' }}>
              <p style={{ margin: 0, fontSize: '0.75rem', color: '#94a3b8', fontStyle: 'italic' }}>
-               "Le sang est un cadeau précieux, un lien qui nous unit tous."
+               {t('print.quote')}
              </p>
           </div>
 

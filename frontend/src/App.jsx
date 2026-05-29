@@ -109,13 +109,13 @@ function App() {
           <Route element={<PublicUserRoute />}>
             <Route path="/" element={<Home />} />
             <Route path="/about" element={<About />} />
-            <Route path="/find-donors" element={<FindDonors />} />
-            <Route path="/campaigns" element={<Campaigns />} />
             <Route path="/users/:id" element={<PublicProfile />} />
           </Route>
 
           {/* Protected Routes: Only logged-in standard users can visit these */}
           <Route element={<UserRoute />}>
+            <Route path="/find-donors" element={<FindDonors />} />
+            <Route path="/campaigns" element={<Campaigns />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/certificate" element={<PrintCertificate />} />
             <Route path="/my-donations" element={<MyDonations />} />

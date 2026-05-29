@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { useAuth } from '../context/AuthContext';
 import axios from '../utils/axios';
 import { Activity, Droplet, HeartPulse, Users, Zap, ShieldCheck, Clock, Search, ArrowRight, Heart } from 'lucide-react';
 import ColorBends from '../components/ColorBends';
@@ -16,6 +17,8 @@ import './home.css';
  */
 const Home = () => {
   const { t } = useTranslation(); // Translation hook
+  const { user } = useAuth();
+  const navigate = useNavigate();
   
   // State to hold the live statistics fetched from the server
   const [dashboard, setDashboard] = useState(null);
@@ -61,20 +64,30 @@ const Home = () => {
         />
         <div className="hero-content">
           <div className="hero-badge">
-            <Heart size={16} className="heart-pulse" /> <span>Be a hero today</span>
+            <Heart size={16} className="heart-pulse" /> <span>{t('home.hero_badge')}</span>
           </div>
           <h1 className="hero-title">
-            Save Lives, <br /> Give <span className="text-primary">Blood</span>
+            {t('home.hero_title_part1')} <br /> {t('home.hero_title_part2')} <span className="text-primary">{t('home.hero_title_part3')}</span>
           </h1>
           <p className="hero-subtitle">
-            Join thousands of donors making a difference. BloodConnect connects you directly with those in need in real-time.
+            {t('home.hero_subtitle')}
           </p>
           <div className="hero-actions">
             <Link to="/register" className="btn btn-primary btn-lg">
-              Become a Donor <ArrowRight size={18} />
+              {t('home.hero_btn_register')} <ArrowRight size={18} />
             </Link>
-            <Link to="/find-donors" className="btn btn-outline btn-lg">
-              <Search size={18} /> Find Blood
+            <Link 
+              to={user ? "/find-donors" : "/login"} 
+              className="btn btn-outline btn-lg"
+              onClick={(e) => {
+                if (!user) {
+                  e.preventDefault();
+                  alert(" Veuillez vous connecter pour accéder à ce contenu.");
+                  navigate('/login');
+                }
+              }}
+            >
+              <Search size={18} /> {t('home.hero_btn_find')}
             </Link>
           </div>
         </div>
@@ -84,7 +97,7 @@ const Home = () => {
       <section className="stats-section">
         <div className="container">
           <h2 className="section-heading">
-            <Activity size={24} className="text-primary" /> Live Statistics
+            <Activity size={24} className="text-primary" /> {t('home.stats_title')}
           </h2>
           <div className="stats-grid">
             {stats.map(({ key, label, icon: Icon, color }) => (
@@ -108,30 +121,30 @@ const Home = () => {
       <section className="how-it-works-section">
         <div className="container">
           <div className="section-header-center">
-            <h2 className="section-title">How It Works</h2>
-            <p className="section-desc">Three simple steps to make a huge impact.</p>
+            <h2 className="section-title">{t('home.how_it_works_title')}</h2>
+            <p className="section-desc">{t('home.how_it_works_subtitle')}</p>
           </div>
           
           <div className="steps-grid">
             <div className="step-card">
               <div className="step-number">1</div>
               <div className="step-icon"><Users size={32} /></div>
-              <h3>Register</h3>
-              <p>Create an account and set your blood type and location. It takes less than 2 minutes.</p>
+              <h3>{t('home.step1_title')}</h3>
+              <p>{t('home.step1_desc')}</p>
             </div>
             
             <div className="step-card">
               <div className="step-number">2</div>
               <div className="step-icon"><Search size={32} /></div>
-              <h3>Connect</h3>
-              <p>Get notified when someone needs your blood type, or search for donors if you are in need.</p>
+              <h3>{t('home.step2_title')}</h3>
+              <p>{t('home.step2_desc')}</p>
             </div>
             
             <div className="step-card">
               <div className="step-number">3</div>
               <div className="step-icon"><HeartPulse size={32} /></div>
-              <h3>Save a Life</h3>
-              <p>Donate blood safely at verified centers and receive your digital certificate.</p>
+              <h3>{t('home.step3_title')}</h3>
+              <p>{t('home.step3_desc')}</p>
             </div>
           </div>
         </div>
@@ -142,29 +155,29 @@ const Home = () => {
         <div className="container">
           <div className="features-layout">
             <div className="features-content">
-              <h2 className="section-title">Why Choose BloodConnect?</h2>
-              <p className="section-desc">We leverage modern technology to make blood donation fast, secure, and transparent.</p>
+              <h2 className="section-title">{t('home.features_title')}</h2>
+              <p className="section-desc">{t('home.features_subtitle')}</p>
               
               <ul className="feature-list">
                 <li>
                   <div className="feature-icon"><Zap size={24} /></div>
                   <div className="feature-text">
-                    <h4>Real-time Tracking</h4>
-                    <p>Live updates on blood stock and instant notifications for urgent requests.</p>
+                    <h4>{t('home.feature1_title')}</h4>
+                    <p>{t('home.feature1_desc')}</p>
                   </div>
                 </li>
                 <li>
                   <div className="feature-icon"><ShieldCheck size={24} /></div>
                   <div className="feature-text">
-                    <h4>Verified Donors</h4>
-                    <p>All users go through a simple verification process to ensure safety and reliability.</p>
+                    <h4>{t('home.feature2_title')}</h4>
+                    <p>{t('home.feature2_desc')}</p>
                   </div>
                 </li>
                 <li>
                   <div className="feature-icon"><Clock size={24} /></div>
                   <div className="feature-text">
-                    <h4>Automated Certificates</h4>
-                    <p>Receive official, downloadable certificates for every successful donation.</p>
+                    <h4>{t('home.feature3_title')}</h4>
+                    <p>{t('home.feature3_desc')}</p>
                   </div>
                 </li>
               </ul>
@@ -174,7 +187,7 @@ const Home = () => {
             <div className="blood-stock-panel">
               <h3 className="stock-title">
                 <Droplet size={20} className="text-primary" />
-                Current Blood Stock
+                {t('home.stock_title')}
               </h3>
               <div className="stock-grid">
                 {(dashboard?.blood_stock || []).map((row) => {
@@ -183,14 +196,14 @@ const Home = () => {
                     <div key={row.blood_type} className={`stock-item ${low ? 'low-stock' : ''}`}>
                       <div className="stock-type">{row.blood_type}</div>
                       <div className="stock-qty">
-                        {row.quantity} <span>units</span>
+                        {row.quantity} <span>{t('home.stock_units')}</span>
                       </div>
                     </div>
                   );
                 })}
               </div>
               {!dashboard?.blood_stock?.length && (
-                <p className="no-data">Fetching latest stock data...</p>
+                <p className="no-data">{t('home.stock_fetching')}</p>
               )}
             </div>
           </div>

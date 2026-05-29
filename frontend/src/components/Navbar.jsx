@@ -47,16 +47,12 @@ export default function Navbar({ logo = "/bloodconnect-logo.png", logoAlt = "Blo
   const isRouterLink = href => href && !isExternalLink(href);
 
   // Adding Icons to NavItems for the modern look
-  const navItems = user ? [
-    { label: t('nav.home') || 'Home', href: '/', icon: Home },
-    { label: t('nav.find_donors') || 'Find Donors', href: '/find-donors', icon: Search },
-    { label: t('nav.campaigns') || 'Campaigns', href: '/campaigns', icon: Target },
-    { label: t('À propos') || 'About', href: '/about', icon: Info },
-    { label: t('nav.my_donations') || 'My Donations', href: '/my-donations', icon: Droplet }
-  ] : [
-    { label: t('nav.home') || 'Home', href: '/', icon: Home },
-    { label: t('nav.register') || 'Register', href: '/register', icon: User },
-    { label: t('À propos') || 'About', href: '/about', icon: Info }
+  const navItems = [
+    { label: t('nav.home'), href: '/', icon: Home },
+    { label: t('nav.find_donors'), href: '/find-donors', icon: Search },
+    { label: t('nav.campaigns'), href: '/campaigns', icon: Target },
+    { label: t('nav.about'), href: '/about', icon: Info },
+    { label: t('nav.my_donations'), href: '/my-donations', icon: Droplet }
   ];
 
   return (
@@ -67,12 +63,12 @@ export default function Navbar({ logo = "/bloodconnect-logo.png", logoAlt = "Blo
         {isRouterLink(navItems?.[0]?.href) ? (
           <Link className="nav-logo" to={navItems[0].href} aria-label="Home">
             <img src={logo} alt={logoAlt} />
-            <span className="desktop-only" style={{ display: 'flex' }}>BloodConnect</span>
+            <span className="desktop-only" style={{ display: 'flex' }}>Blood</span>
           </Link>
         ) : (
           <a className="nav-logo" href={navItems?.[0]?.href || '#'} aria-label="Home">
             <img src={logo} alt={logoAlt} />
-            <span className="desktop-only" style={{ display: 'flex' }}>BloodConnect</span>
+            <span className="desktop-only" style={{ display: 'flex' }}>Blood</span>
           </a>
         )}
 
@@ -82,11 +78,24 @@ export default function Navbar({ logo = "/bloodconnect-logo.png", logoAlt = "Blo
             const isActive = location.pathname === item.href;
             const linkClass = `nav-link ${isActive ? 'active' : ''}`;
             const Icon = item.icon;
+            const isProtected = !user && ['/find-donors', '/campaigns', '/my-donations'].includes(item.href);
 
             return (
               <li key={item.href || `item-${i}`} className="nav-item" role="none">
                 {isRouterLink(item.href) ? (
-                  <Link role="menuitem" to={item.href} className={linkClass} aria-label={item.ariaLabel || item.label}>
+                  <Link 
+                    role="menuitem" 
+                    to={isProtected ? "/login" : item.href} 
+                    className={linkClass} 
+                    aria-label={item.ariaLabel || item.label}
+                    onClick={(e) => {
+                      if (isProtected) {
+                        e.preventDefault();
+                        alert("Veuillez vous connecter pour accéder à ce contenu");
+                        navigate('/login');
+                      }
+                    }}
+                  >
                     {Icon && <Icon size={18} />}
                     {item.label}
                   </Link>
@@ -135,17 +144,22 @@ export default function Navbar({ logo = "/bloodconnect-logo.png", logoAlt = "Blo
 
               <div className={`nav-dropdown ${profileDropdownOpen ? 'open' : ''}`}>
                 <Link to="/profile" className="nav-dropdown-item" onClick={() => setProfileDropdownOpen(false)}>
-                  <User size={18} /> {t('nav.profile') || 'Profile'}
+                  <User size={18} /> {t('nav.profile')}
                 </Link>
                 <button className="nav-dropdown-item danger" onClick={handleLogout}>
-                  <LogOut size={18} /> {t('nav.logout') || 'Logout'}
+                  <LogOut size={18} /> {t('nav.logout')}
                 </button>
               </div>
             </div>
           ) : (
-            <Link to="/login" className="nav-login-btn">
-              {t('nav.login') || 'Login'}
-            </Link>
+            <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'center' }}>
+              <Link to="/login" className="nav-login-btn">
+                {t('nav.login')}
+              </Link>
+              <Link to="/register" className="nav-login-btn" style={{ background: 'transparent', border: '1.5px solid var(--primary)', color: 'var(--primary)' }}>
+                {t('nav.register')}
+              </Link>
+            </div>
           )}
         </div>
 
@@ -183,11 +197,23 @@ export default function Navbar({ logo = "/bloodconnect-logo.png", logoAlt = "Blo
             const isActive = location.pathname === item.href;
             const linkClass = `mobile-nav-link ${isActive ? 'active' : ''}`;
             const Icon = item.icon;
+            const isProtected = !user && ['/find-donors', '/campaigns', '/my-donations'].includes(item.href);
 
             return (
               <li key={item.href || `mobile-item-${i}`}>
                 {isRouterLink(item.href) ? (
-                  <Link to={item.href} className={linkClass} onClick={() => setIsMobileMenuOpen(false)}>
+                  <Link 
+                    to={isProtected ? "/login" : item.href} 
+                    className={linkClass} 
+                    onClick={(e) => {
+                      setIsMobileMenuOpen(false);
+                      if (isProtected) {
+                        e.preventDefault();
+                        alert("You must log in first to access this content.");
+                        navigate('/login');
+                      }
+                    }}
+                  >
                     {Icon && <Icon size={20} />}
                     {item.label}
                   </Link>
@@ -206,22 +232,27 @@ export default function Navbar({ logo = "/bloodconnect-logo.png", logoAlt = "Blo
         <div className="mobile-actions">
           <button className="mobile-action-btn secondary" onClick={() => { toggleLanguage(); setIsMobileMenuOpen(false); }}>
             <Globe size={18} />
-            Changer la Langue
+            {t('nav.change_lang')}
           </button>
           
           {user ? (
             <>
               <Link to="/profile" className="mobile-action-btn secondary" style={{ textDecoration: 'none' }} onClick={() => setIsMobileMenuOpen(false)}>
-                <User size={18} /> {t('nav.profile') || 'Profile'}
+                <User size={18} /> {t('nav.profile')}
               </Link>
               <button className="mobile-action-btn danger" onClick={handleLogout}>
-                <LogOut size={18} /> {t('nav.logout') || 'Logout'}
+                <LogOut size={18} /> {t('nav.logout')}
               </button>
             </>
           ) : (
-            <Link to="/login" className="mobile-action-btn secondary" style={{ textDecoration: 'none', background: 'rgba(104, 26, 21, 0.1)', color: 'var(--primary)' }} onClick={() => setIsMobileMenuOpen(false)}>
-              <User size={18} /> {t('nav.login') || 'Login'}
-            </Link>
+            <>
+              <Link to="/login" className="mobile-action-btn secondary" style={{ textDecoration: 'none', background: 'rgba(104, 26, 21, 0.1)', color: 'var(--primary)' }} onClick={() => setIsMobileMenuOpen(false)}>
+                <User size={18} /> {t('nav.login')}
+              </Link>
+              <Link to="/register" className="mobile-action-btn secondary" style={{ textDecoration: 'none' }} onClick={() => setIsMobileMenuOpen(false)}>
+                <User size={18} /> {t('nav.register')}
+              </Link>
+            </>
           )}
         </div>
       </div>

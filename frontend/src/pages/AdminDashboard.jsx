@@ -169,12 +169,11 @@ export default function AdminDashboard() {
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
           <h2 style={{ fontSize: '1.25rem', fontWeight: '900', display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
             <Target size={20} color="var(--primary)" />
-            Demandes de Campagnes
+            {t('admin.dashboard.campaign_requests')}
           </h2>
         </div>
-
         {campaigns.length === 0 ? (
-           <p className="stats-muted">Aucune demande de campagne.</p>
+           <p className="stats-muted">{t('admin.dashboard.no_campaign_requests')}</p>
         ) : (
           <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
             {campaigns.map(c => (
@@ -186,7 +185,7 @@ export default function AdminDashboard() {
                   <div>
                     <h4 style={{ margin: '0 0 4px', fontWeight: 800 }}>{c.title}</h4>
                     <p style={{ margin: 0, fontSize: '0.8rem', color: 'var(--text-muted)' }}>
-                      Par: {c.user?.name || c.organizer_name || 'Inconnu'} • {c.city} • {c.date}
+                      {t('admin.dashboard.by')} {c.user?.name || c.organizer_name || t('admin.dashboard.unknown')} • {c.city} • {c.date}
                     </p>
                   </div>
                 </div>
@@ -194,10 +193,10 @@ export default function AdminDashboard() {
                 <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
                   {c.approval_status === 'pending' ? (
                     <>
-                      <button onClick={() => handleCampaignStatus(c.id, 'approved')} style={{ background: '#10b981', color: 'white', border: 'none', padding: '8px', borderRadius: '8px', cursor: 'pointer' }} title="Approuver">
+                      <button onClick={() => handleCampaignStatus(c.id, 'approved')} style={{ background: '#10b981', color: 'white', border: 'none', padding: '8px', borderRadius: '8px', cursor: 'pointer' }} title={t('admin.dashboard.approve')}>
                         <Check size={18} />
                       </button>
-                      <button onClick={() => handleCampaignStatus(c.id, 'rejected')} style={{ background: '#ef4444', color: 'white', border: 'none', padding: '8px', borderRadius: '8px', cursor: 'pointer' }} title="Rejeter">
+                      <button onClick={() => handleCampaignStatus(c.id, 'rejected')} style={{ background: '#ef4444', color: 'white', border: 'none', padding: '8px', borderRadius: '8px', cursor: 'pointer' }} title={t('admin.dashboard.reject')}>
                         <X size={18} />
                       </button>
                     </>

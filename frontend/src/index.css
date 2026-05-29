@@ -1,9 +1,9 @@
 :root {
   /* Core Brand Colors - Burgundy Red & Sky Blue Theme */
-  --primary: #681A15;
-  --primary-hover: #7b1e19;
+  --primary: #d25a52;
+  --primary-hover: #d0342c;
   --primary-light: rgba(104, 26, 21, 0.1);
-  --primary-dark: #4d120f;
+  --primary-dark: #e23d34;
 
   --secondary: #BBCAE1;
   --secondary-hover: #98abc9;

@@ -15,6 +15,9 @@ const AdminLayout = ({ children }) => {
   };
 
   const sidebarStyle = {
+    position: "sticky",
+    top: "20px",
+
     width: '260px',
     backgroundColor: '#fff',
     borderRight: isRtl ? 'none' : '1px solid var(--border)',
@@ -84,7 +87,7 @@ const AdminLayout = ({ children }) => {
               color: 'var(--primary)'
             }}
           >
-            <span style={{ fontSize: '1.2rem' }}>🚪</span> {t('logout') || 'Logout'}
+            <span style={{ fontSize: '1.2rem' }}>🚪</span> {t('Déconnexion') || 'Logout'}
           </button>
         </div>
       </aside>

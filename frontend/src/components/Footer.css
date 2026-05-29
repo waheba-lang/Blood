@@ -3,12 +3,12 @@
    ==================================================== */
 
 :root {
-  --footer-bg: #4d120f;
+  --footer-bg: #c4473e;
   /* Dark navy that blends well with Sky Blue and matches image */
 }
 
 .footer-custom {
-  background-color: #4d120f;
+  background-color: #c4473e;
   /* background: var(--footer-bg); */
   color: #e2e8f0;
   position: relative;

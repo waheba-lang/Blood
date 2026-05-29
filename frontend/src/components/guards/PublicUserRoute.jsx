@@ -11,12 +11,12 @@ import { useAuth } from '../../context/AuthContext';
 const PublicUserRoute = () => {
   const { user } = useAuth();
 
-  // Redirect admins to their dashboard
+  //  redericti l admin dashboard ila admin kayn 
   if (user && user.role === 'admin') {
     return <Navigate to="/admin/dashboard" replace />;
   }
 
-  // Everyone else (guests and normal users) can see the public page
+  // e  kolchi khassou ychouf public pages ila ma kansh admin
   return <Outlet />;
 };
 
