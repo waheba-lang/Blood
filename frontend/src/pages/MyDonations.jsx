@@ -9,7 +9,7 @@ import './bms-pages.css';
 /**
  * MyDonations Page Component
  * 
- * Allows users to view their past donations and log new ones.
+ * Allows users to view their past donations and log new ones 
  * It enforces the 3-month health rule between donations.
  */
 export default function MyDonations() {
@@ -48,7 +48,7 @@ export default function MyDonations() {
   }, [nextEligibleDate]);
 
   /**
-   * Fetch the user's past donations from the backend.
+   *  njib API w n7otohom f state bach n3rdohom f l page
    */
   const fetchDonations = async () => {
     setLoading(true);
@@ -62,7 +62,7 @@ export default function MyDonations() {
     }
   };
 
-  // Fetch donations when the component mounts, if the user is logged in
+  //  ila kan user kayn fetch donations ila ma kaynch ma ndir walo
   useEffect(() => {
     if (user) fetchDonations();
   }, [user]);

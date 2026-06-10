@@ -51,15 +51,96 @@ const Campaigns = () => {
     return new Date() >= nextEligibleDate; // Can donate if today is AFTER their next eligible date
   }, [nextEligibleDate]);
 
+  // Fallback mock campaigns when the backend API is offline or empty
+  const MOCK_CAMPAIGNS = [
+    {
+      id: 201,
+      title: 'Collecte Spéciale Ramadan',
+      date: '2026-06-19',
+      start_time: '19:00',
+      end_time: '23:30',
+      time: '19:00 - 23:30',
+      location: 'Place Mohammed V, devant la Wilaya',
+      city: 'Casablanca',
+      description: 'Collecte de sang nocturne spéciale pendant le mois sacré du Ramadan pour compenser la baisse des dons en journée et reconstituer les réserves d\'urgence.',
+      target: 300,
+      participants_count: 120,
+      organizer_name: 'Association Al Amal Oujda',
+      contact_info: '+212620304050',
+      blood_types: ['O+', 'O-', 'A+', 'A-', 'B+', 'B-'],
+      status: 'upcoming',
+      approval_status: 'approved'
+    },
+    {
+      id: 202,
+      title: 'Campagne Universitaire - UMP',
+      date: '2026-06-08',
+      start_time: '09:00',
+      end_time: '17:00',
+      time: '09:00 - 17:00',
+      location: 'Maison de l\'Étudiant, Université Mohammed Premier',
+      city: 'Oujda',
+      description: 'Grande collecte étudiante ouverte à tous les départements. Venez nombreux montrer votre solidarité et sauver des vies !',
+      target: 150,
+      participants_count: 45,
+      organizer_name: 'Association Al Amal Oujda',
+      contact_info: '+212620304050',
+      blood_types: ['A+', 'A-', 'B+', 'O+', 'O-', 'AB+'],
+      status: 'upcoming',
+      approval_status: 'approved'
+    },
+    {
+      id: 203,
+      title: 'Urgence Réserves Négatives',
+      date: '2026-06-01',
+      start_time: '08:00',
+      end_time: '18:00',
+      time: '08:00 - 18:00',
+      location: 'Centre Régional de Transfusion Sanguine, CHU Ibn Sina',
+      city: 'Rabat',
+      description: 'Mobilisation d\'urgence pour pallier la pénurie critique de rhésus négatifs (O-, A-, B-). Tous les donneurs de ces groupes sont invités à se présenter.',
+      target: 200,
+      participants_count: 195,
+      organizer_name: 'Dr. Rachid Idrissi (Croissant Rouge)',
+      contact_info: '+212630405060',
+      blood_types: ['O-', 'A-', 'B-', 'AB-'],
+      status: 'completed',
+      approval_status: 'approved'
+    },
+    {
+      id: 204,
+      title: 'Solidarité Estivale Agadir',
+      date: '2026-08-04',
+      start_time: '10:00',
+      end_time: '20:00',
+      time: '10:00 - 20:00',
+      location: 'Esplanade de la Marina d\'Agadir',
+      city: 'Agadir',
+      description: 'Collecte d\'été à destination des vacanciers et résidents. Assurer la continuité des stocks durant la période estivale est primordial pour la région.',
+      target: 250,
+      participants_count: 8,
+      organizer_name: 'Dr. Rachid Idrissi (Croissant Rouge)',
+      contact_info: '+212630405060',
+      blood_types: ['O+', 'A+', 'B+', 'AB+', 'O-'],
+      status: 'upcoming',
+      approval_status: 'approved'
+    }
+  ];
+
   /**
    * Fetches all campaigns from the backend API.
    */
   const fetchCampaigns = async () => {
     try {
       const res = await axios.get('/campaigns');
-      setCampaigns(res.data);
+      if (res.data && res.data.length > 0) {
+        setCampaigns(res.data);
+      } else {
+        setCampaigns(MOCK_CAMPAIGNS);
+      }
     } catch (err) {
-      console.error("Error fetching campaigns:", err);
+      console.warn("Error fetching campaigns. Using local mock campaigns fallback.", err);
+      setCampaigns(MOCK_CAMPAIGNS);
     } finally {
       setLoading(false);
     }

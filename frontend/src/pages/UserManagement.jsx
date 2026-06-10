@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import axios from '../utils/axios';
 import { useTranslation } from 'react-i18next';
 import { Users, UserX, RefreshCw, Trash2, Search, Filter } from 'lucide-react';
-import Card from '../components/Card';
 
 /**
  * UserManagement Page Component

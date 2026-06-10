@@ -3,7 +3,6 @@ import axios from '../utils/axios';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Users, Droplet, CheckCircle2, ArrowRight, UserPlus, History, Target, Check, X } from 'lucide-react';
-import Card from '../components/Card';
 
 /**
  * AdminDashboard Page Component

@@ -20,6 +20,25 @@ const Home = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
   
+  // Fallback mock dashboard stats when the backend API is offline
+  const MOCK_DASHBOARD = {
+    total_donors: 32,
+    available_donors: 20,
+    not_available_donors: 12,
+    total_donations: 124,
+    total_stock_units: 149,
+    blood_stock: [
+      { blood_type: 'A+', quantity: 35 },
+      { blood_type: 'A-', quantity: 7 },
+      { blood_type: 'B+', quantity: 22 },
+      { blood_type: 'B-', quantity: 5 },
+      { blood_type: 'AB+', quantity: 14 },
+      { blood_type: 'AB-', quantity: 3 },
+      { blood_type: 'O+', quantity: 42 },
+      { blood_type: 'O-', quantity: 4 }
+    ]
+  };
+
   // State to hold the live statistics fetched from the server
   const [dashboard, setDashboard] = useState(null);
 
@@ -29,8 +48,17 @@ const Home = () => {
   useEffect(() => {
     // Make a GET request to the /dashboard API endpoint
     axios.get('/dashboard')
-      .then((res) => setDashboard(res.data))
-      .catch(() => setDashboard(null));
+      .then((res) => {
+        if (res.data) {
+          setDashboard(res.data);
+        } else {
+          setDashboard(MOCK_DASHBOARD);
+        }
+      })
+      .catch((err) => {
+        console.warn("API server is offline. Using local mock stats fallback.", err);
+        setDashboard(MOCK_DASHBOARD);
+      });
   }, []); // Empty array means this runs exactly ONCE
 
   // Define the statistics cards we want to display.

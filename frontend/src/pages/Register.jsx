@@ -3,7 +3,6 @@ import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { useTranslation } from 'react-i18next';
 import axios from '../utils/axios';
-import Card from '../components/Card';
 
 /**
  * Register Page Component
@@ -26,8 +25,7 @@ export default function Register() {
     blood_type: 'O+', 
     age: '', 
     gender: 'Male',
-    avatar_type: 'defaults/avatars/avatar1.png', // Default avatar path
-    profile_photo: null // Used if the user uploads a custom photo
+    avatar_type: 'defaults/avatars/avatar1.png' // Default avatar path
   });
   
   const [error, setError] = useState('');
@@ -56,20 +54,19 @@ export default function Register() {
     }
     setError('');
     
-    // We use FormData instead of standard JSON because we might be uploading a file (profile_photo)
-    const data = new FormData();
+    // Construct normal JSON payload instead of FormData
+    const payload = {};
     Object.keys(formData).forEach(key => {
-      // Only append fields that actually have a value
       if (formData[key] !== null && formData[key] !== undefined && formData[key] !== '') {
-        data.append(key, formData[key]);
+        payload[key] = formData[key];
       }
     });
 
     try {
       // Call the register function from AuthContext
-      await register(data);
-      // If successful, redirect to dashboard
-      navigate('/dashboard');
+      await register(payload);
+      // Redirect directly to Home page
+      navigate('/');
     } catch (err) {
       // Show error message
       setError(err.response?.data?.message || t('auth.register_error'));
@@ -205,46 +202,19 @@ export default function Register() {
               {defaultAvatars.map((path, idx) => (
                 <div 
                   key={idx}
-                  onClick={() => setFormData({ ...formData, avatar_type: path, profile_photo: null })}
+                  onClick={() => setFormData({ ...formData, avatar_type: path })}
                   style={{
                     width: '60px',
                     height: '60px',
                     borderRadius: '50%',
                     cursor: 'pointer',
-                    border: formData.avatar_type === path && !formData.profile_photo ? '3px solid var(--primary)' : '3px solid transparent',
+                    border: formData.avatar_type === path ? '3px solid var(--primary)' : '3px solid transparent',
                     background: `url(${baseUrl}/${path}) center/cover`,
                     transition: 'all 0.2s ease'
                   }}
                   title={`Avatar ${idx + 1}`}
                 />
               ))}
-              <label 
-                className="btn btn-outline" 
-                style={{ 
-                  width: '60px', 
-                  height: '60px', 
-                  borderRadius: '50%', 
-                  display: 'flex', 
-                  alignItems: 'center', 
-                  justifyContent: 'center',
-                  padding: 0,
-                  fontSize: '0.8rem',
-                  border: formData.profile_photo ? '3px solid var(--primary)' : '1px dashed #ccc'
-                }}
-              >
-                <input 
-                  type="file" 
-                  hidden 
-                  accept="image/*" 
-                  onChange={(e) => {
-                    const file = e.target.files[0];
-                    if (file) {
-                      setFormData({ ...formData, profile_photo: file, avatar_type: '' });
-                    }
-                  }} 
-                />
-                {formData.profile_photo ? <img src={URL.createObjectURL(formData.profile_photo)} style={{width:'100%', height:'100%', borderRadius:'50%', objectFit:'cover'}} /> : '+'}
-              </label>
             </div>
           </div>
 

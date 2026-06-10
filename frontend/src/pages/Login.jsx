@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { useTranslation } from 'react-i18next';
-import Card from '../components/Card';
 
 /**
  * Login Page Component
@@ -32,17 +31,10 @@ export default function Login() {
 
     try {
       // Attempt to log in with the provided credentials
-      const data = await login(email, password);
-      const userRole = data?.user?.role;
+      await login(email, password);
       
-      // Redirect to the appropriate dashboard based on user role
-      if (userRole === 'admin') {
-        navigate('/admin/dashboard');
-      } else if (userRole === 'organizer') {
-        navigate('/organizer/dashboard');
-      } else {
-        navigate('/dashboard');
-      }
+      // Redirect directly to Home page
+      navigate('/');
     } catch (err) {
       // If login fails, extract the error message and display it
       const msg = err.response?.data?.message || err.message || t('auth.login_error');
@@ -58,7 +50,7 @@ export default function Login() {
           <p>{t('auth.login_subtitle')}</p>
         </div>
 
-        {/* Display error message if one exists */}
+        {/* Display error message if one exists  msg error ila kan ghi wahd*/}
         {error && (
           <div className="auth-error">
             {error}

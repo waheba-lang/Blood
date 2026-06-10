@@ -82,22 +82,15 @@ export default function Profile() {
     e.preventDefault();
     setSaving(true);
     
-    const data = new FormData();
+    const payload = {};
     Object.keys(formData).forEach(key => {
       if (formData[key] !== null && key !== 'avatar_url') {
-         data.append(key, formData[key]);
+         payload[key] = formData[key];
       }
     });
-    
-    if (formData.profile_photo_file) {
-      data.append('profile_photo', formData.profile_photo_file);
-    }
 
     try {
-      data.append('_method', 'PUT');
-      await axios.post(`/users/${user.id}`, data, {
-        headers: { 'Content-Type': 'multipart/form-data' }
-      });
+      await axios.put(`/users/${user.id}`, payload);
       
       setMessage(t('profile.update_success'));
       setMsgType('success');
@@ -108,13 +101,6 @@ export default function Profile() {
       setMsgType('error');
     } finally {
       setSaving(false);
-    }
-  };
-
-  const handleFileChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      setFormData({ ...formData, profile_photo_file: file, avatar_type: '' });
     }
   };
 
@@ -150,12 +136,6 @@ export default function Profile() {
       <section className="profile-hero">
         <div className="profile-avatar-container" style={{ backgroundImage: user.avatar_url ? `url(${user.avatar_url})` : 'none' }}>
           {!user.avatar_url && user.name.charAt(0)}
-          {isEditing && (
-            <label className="avatar-edit-btn">
-              <Camera size={20} />
-              <input type="file" hidden onChange={handleFileChange} accept="image/*" />
-            </label>
-          )}
         </div>
 
         <div className="profile-header-info">
@@ -214,13 +194,13 @@ export default function Profile() {
                   {defaultAvatars.map((path, idx) => (
                     <div 
                       key={idx}
-                      onClick={() => setFormData({ ...formData, avatar_type: path, profile_photo_file: null })}
+                      onClick={() => setFormData({ ...formData, avatar_type: path })}
                       style={{
                         width: '50px',
                         height: '50px',
                         borderRadius: '50%',
                         cursor: 'pointer',
-                        border: (formData.avatar_type === path && !formData.profile_photo_file) ? '3px solid var(--p-accent)' : '2px solid #eee',
+                        border: formData.avatar_type === path ? '3px solid var(--p-accent)' : '2px solid #eee',
                         background: `url(${baseUrl}/${path}) center/cover`,
                         transition: 'all 0.2s'
                       }}
